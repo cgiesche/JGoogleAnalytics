@@ -73,6 +73,18 @@ public class PayloadTest extends PayloadTestBase {
 	}
 
 	@Test
+	public void testAnonymizeIP() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.APPVIEW);
+
+		// when
+		payload.anonymizeIP();
+
+		// then
+		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_ANONYMIZE_IP, "1");
+	}
+
+	@Test
 	public void testContentInformation() throws Exception {
 		// given
 		final Payload payload = new Payload(Payload.HitType.APPVIEW);

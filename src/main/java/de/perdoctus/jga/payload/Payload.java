@@ -42,6 +42,7 @@ public class Payload<T extends Payload> {
 	public static final String KEY_HITTYPE_NONINTERACTIVE = "ni";
 	public static final String KEY_TRACKING_ID = "tid";
 	public static final String KEY_CLIENT_ID = "cid";
+	public static final String KEY_ANONYMIZE_IP = "aip";
 	private final Logger LOG = LoggerFactory.getLogger(Payload.class);
 	private final HashMap<String, String> payloadData = new HashMap<>();
 
@@ -97,6 +98,14 @@ public class Payload<T extends Payload> {
 		}
 
 		return stringBuilder.toString();
+	}
+
+	/**
+	 * When present, the IP address of the sender will be anonymized.
+	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#aip">Anonymize IP</a>
+	 */
+	public void anonymizeIP() {
+		addParameter(KEY_ANONYMIZE_IP, "1");
 	}
 
 	/**
