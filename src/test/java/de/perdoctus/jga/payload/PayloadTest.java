@@ -85,6 +85,30 @@ public class PayloadTest extends PayloadTestBase {
 	}
 
 	@Test
+	public void testSessionStart() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.APPVIEW);
+
+		// when
+		payload.sessionControlStart();
+
+		// then
+		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_SESSION_CONTROL, "start");
+	}
+
+	@Test
+	public void testSessionEnd() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.APPVIEW);
+
+		// when
+		payload.sessionControlEnd();
+
+		// then
+		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_SESSION_CONTROL, "end");
+	}
+
+	@Test
 	public void testContentInformation() throws Exception {
 		// given
 		final Payload payload = new Payload(Payload.HitType.APPVIEW);

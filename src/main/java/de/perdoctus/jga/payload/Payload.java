@@ -43,7 +43,9 @@ public class Payload<T extends Payload> {
 	public static final String KEY_TRACKING_ID = "tid";
 	public static final String KEY_CLIENT_ID = "cid";
 	public static final String KEY_ANONYMIZE_IP = "aip";
+	public static final String KEY_SESSION_CONTROL = "sc";
 	private static final Logger LOG = LoggerFactory.getLogger(Payload.class);
+	public static final String UNCHECKED = "unchecked";
 	private final Map<String, String> payloadData = new HashMap<>();
 
 	protected Payload(final HitType hitType) {
@@ -60,7 +62,7 @@ public class Payload<T extends Payload> {
 	 * Specifies that a hit be considered non-interactive.
 	 * <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni">Non-Interaction Hit</a>
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public T nonInteractive() {
 		addParameter(KEY_HITTYPE_NONINTERACTIVE, "1");
 		return (T) this;
@@ -69,7 +71,7 @@ public class Payload<T extends Payload> {
 	/**
 	 * <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#content">Content Information</a>
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public T contentInformation(final ContentInformation contentInformation) {
 		addParameter(KEY_DOCUMENT_HOST_NAME, contentInformation.getDocumentHostName());
 		addParameter(KEY_DOCUMENT_LOCATION, contentInformation.getDocumentLocation());
@@ -107,6 +109,28 @@ public class Payload<T extends Payload> {
 	 */
 	public void anonymizeIP() {
 		addParameter(KEY_ANONYMIZE_IP, "1");
+	}
+
+	/**
+	 * Used to control the session duration. Forces a new session to start with this hit.
+	 *
+	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#sc">Session Control</a>
+	 */
+	@SuppressWarnings(UNCHECKED)
+	public T sessionControlStart() {
+		addParameter(KEY_SESSION_CONTROL, "start");
+		return (T) this;
+	}
+
+	/**
+	 * Used to control the session duration. Forces the current session to end with this hit.
+	 *
+	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#sc">Session Control</a>
+	 */
+	@SuppressWarnings(UNCHECKED)
+	public T sessionControlEnd() {
+		addParameter(KEY_SESSION_CONTROL, "end");
+		return (T) this;
 	}
 
 	/**
