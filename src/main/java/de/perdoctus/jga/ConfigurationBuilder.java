@@ -24,7 +24,7 @@ import java.util.UUID;
 /**
  * @author Christoph Giesche
  */
-public class ConfigurationBuilder {
+public final class ConfigurationBuilder {
 
 	protected static final String ENDPOINT_HTTP = "http://www.google-analytics.com/collect";
 	protected static final String ENDPOINT_HTTPS = "https://ssl.google-analytics.com/collect";
