@@ -65,12 +65,14 @@ public class Collector {
 		try {
 			final HttpPost postRequest = new HttpPost(configuration.getEndpointURL());
 			postRequest.setEntity(new StringEntity(payload.toString(), "UTF-8"));
+			LOG.info("Sending Request: " + payload.toString());
 			final HttpResponse response = httpClient.execute(postRequest);
 			final StatusLine statusLine = response.getStatusLine();
 			final int statusCode = statusLine.getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
 				LOG.warn("Got Status-Code " + statusCode + ": " + statusLine.getReasonPhrase());
 			}
+			response.getEntity().getContent().close();
 		} catch (Exception e) {
 			LOG.error("Failed to execute collection request.", e);
 		}
