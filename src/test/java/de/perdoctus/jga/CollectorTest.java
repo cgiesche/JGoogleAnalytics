@@ -20,13 +20,24 @@
 package de.perdoctus.jga;
 
 import de.perdoctus.jga.payload.Event;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicStatusLine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.InputStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.configuration.GlobalConfiguration.validate;
 
 /**
@@ -56,12 +67,19 @@ public class CollectorTest {
 		// given
 		final Configuration configuration = ConfigurationBuilder.httpEndpoint("12345").build();
 		final Collector collector = new Collector(configuration, httpClientMock);
-		final Event event = new Event("Test", "Action");
+
+		final HttpResponse httpResponseMock = mock(HttpResponse.class);
+		when(httpClientMock.execute(any(HttpPost.class))).thenReturn(httpResponseMock);
+		when(httpResponseMock.getStatusLine()).thenReturn(new BasicStatusLine(mock(ProtocolVersion.class), 200, "yo"));
+		final HttpEntity httpEntityMock = mock(HttpEntity.class);
+		when(httpResponseMock.getEntity()).thenReturn(httpEntityMock);
+		final InputStream inputStreamMock = mock(InputStream.class);
+		when(httpEntityMock.getContent()).thenReturn(inputStreamMock);
 
 		// when
-		collector.collect(event);
+		collector.collect(new Event("Test", "Action"));
 
 		// then
-
+		verify(inputStreamMock).close();
 	}
 }
