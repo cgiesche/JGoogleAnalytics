@@ -20,41 +20,49 @@
 package de.perdoctus.jga;
 
 import de.perdoctus.jga.payload.Payload;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Christoph Giesche
  */
 public class Collector {
 
-	private static final Logger LOG = LoggerFactory.getLogger(Collector.class);
+	public static final int HTTP_MAX_TOTAL = 10;
+	public static final int HTTP_MAX_PER_ROUTE = 10;
+	public static final int MAX_THREADS = 10;
+	public static final String USER_AGENT = "Apache-HttpClient/4.3.3 (%s ; %s;)";
+	private final ExecutorService executorService;
 	private final Configuration configuration;
 	private final HttpClient httpClient;
 
 	public Collector(final Configuration configuration) {
-		this.httpClient = HttpClientBuilder.create().build();
+		final PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager(1000, TimeUnit.MILLISECONDS);
+		poolingHttpClientConnectionManager.setMaxTotal(HTTP_MAX_TOTAL);
+		poolingHttpClientConnectionManager.setDefaultMaxPerRoute(HTTP_MAX_PER_ROUTE);
+		final String userAgentString = String.format(USER_AGENT, System.getProperty("os.name"), System.getProperty("os.arch"));
+
+		this.httpClient = HttpClientBuilder
+				.create()
+				.setUserAgent(userAgentString)
+				.setConnectionManager(poolingHttpClientConnectionManager)
+				.build();
+
 		this.configuration = configuration;
+		this.executorService = Executors.newFixedThreadPool(MAX_THREADS);
 	}
 
-	public Collector(final Configuration configuration, final HttpClient httpClient) {
+	public Collector(final Configuration configuration, final HttpClient httpClient, final ExecutorService executorService) {
 		this.httpClient = httpClient;
 		this.configuration = configuration;
-	}
-
-	public Configuration getConfiguration() {
-		return configuration;
-	}
-
-	public HttpClient getHttpClient() {
-		return httpClient;
+		this.executorService = executorService;
 	}
 
 	/**
@@ -62,20 +70,14 @@ public class Collector {
 	 */
 	public void collect(final Payload payload) {
 		configure(payload);
-		try {
-			final HttpPost postRequest = new HttpPost(configuration.getEndpointURL());
-			postRequest.setEntity(new StringEntity(payload.toString(), "UTF-8"));
-			LOG.info("Sending Request: " + payload.toString());
-			final HttpResponse response = httpClient.execute(postRequest);
-			final StatusLine statusLine = response.getStatusLine();
-			final int statusCode = statusLine.getStatusCode();
-			if (statusCode != HttpStatus.SC_OK) {
-				LOG.warn("Got Status-Code " + statusCode + ": " + statusLine.getReasonPhrase());
-			}
-			response.getEntity().getContent().close();
-		} catch (Exception e) {
-			LOG.error("Failed to execute collection request.", e);
-		}
+
+		final HttpPost postRequest = new HttpPost(configuration.getEndpointURL());
+		postRequest.setEntity(new StringEntity(payload.getParametersAsString(), "UTF-8"));
+
+		final Thread collectionRequestThread = new Thread(new CollectionRequest(httpClient, postRequest));
+		collectionRequestThread.setDaemon(true);
+
+		executorService.submit(collectionRequestThread);
 	}
 
 	private void configure(final Payload payload) {

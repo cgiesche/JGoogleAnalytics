@@ -22,6 +22,8 @@ package de.perdoctus.jga.payload;
 import de.perdoctus.jga.payload.segments.ContentInformation;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author Christoph Giesche
  */
@@ -109,18 +111,41 @@ public class PayloadTest extends PayloadTestBase {
 	}
 
 	@Test
+	public void testQueueTime() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.APPVIEW);
+
+		// when
+		final Payload resultPayload = payload.queueTime(3);
+
+		// then
+		assertThat(resultPayload).isSameAs(payload);
+		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_QUEUE_TIME, "5");
+
+	}
+
+	@Test
 	public void testContentInformation() throws Exception {
 		// given
 		final Payload payload = new Payload(Payload.HitType.APPVIEW);
 
 		// when
-		payload.contentInformation(new ContentInformation().documentHostName("dHostname").documentLocation("/dLoc").documentPath("/dPath").documentTitle("Schöner Titel"));
+		final ContentInformation contentInformation = new ContentInformation()
+				.documentHostName("dHostname")
+				.documentLocation("/dLoc")
+				.documentPath("/dPath")
+				.documentTitle("Schöner Titel")
+				.contentDescription("schöner content")
+				.linkId("lünk");
+		payload.contentInformation(contentInformation);
 
 		// then
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_DOCUMENT_HOST_NAME, "dHostname");
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_DOCUMENT_LOCATION, "/dLoc");
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_DOCUMENT_PATH, "/dPath");
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_DOCUMENT_TITLE, "Schöner Titel");
+		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_DOCUMENT_HOST_NAME, "dHostname");
+		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_DOCUMENT_LOCATION, "/dLoc");
+		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_DOCUMENT_PATH, "/dPath");
+		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_DOCUMENT_TITLE, "Schöner Titel");
+		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_CONTENT_DESCRIPTION, "schöner content");
+		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_LINK_ID, "lünk");
 	}
 
 	@Test
@@ -132,10 +157,10 @@ public class PayloadTest extends PayloadTestBase {
 		payload.contentInformation(new ContentInformation());
 
 		// then
-		assertParamNotPresent(payload, Payload.KEY_DOCUMENT_HOST_NAME);
-		assertParamNotPresent(payload, Payload.KEY_DOCUMENT_LOCATION);
-		assertParamNotPresent(payload, Payload.KEY_DOCUMENT_PATH);
-		assertParamNotPresent(payload, Payload.KEY_DOCUMENT_TITLE);
+		assertParamNotPresent(payload, ContentInformation.KEY_DOCUMENT_HOST_NAME);
+		assertParamNotPresent(payload, ContentInformation.KEY_DOCUMENT_LOCATION);
+		assertParamNotPresent(payload, ContentInformation.KEY_DOCUMENT_PATH);
+		assertParamNotPresent(payload, ContentInformation.KEY_DOCUMENT_TITLE);
 	}
 
 }

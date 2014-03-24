@@ -26,10 +26,18 @@ package de.perdoctus.jga.payload.segments;
  */
 public class ContentInformation {
 
+	public static final String KEY_DOCUMENT_LOCATION = "dl";
+	public static final String KEY_DOCUMENT_HOST_NAME = "dh";
+	public static final String KEY_DOCUMENT_PATH = "dp";
+	public static final String KEY_DOCUMENT_TITLE = "dt";
+	public static final String KEY_CONTENT_DESCRIPTION = "cd";
+	public static final String KEY_LINK_ID = "linkid";
 	private String documentLocation;
 	private String documentHostName;
 	private String documentPath;
 	private String documentTitle;
+	private String contentDescription;
+	private String linkId;
 
 	public ContentInformation() {
 	}
@@ -43,7 +51,6 @@ public class ContentInformation {
 	 * @param documentLocation Use this parameter to send the full URL (document location) of the page on which content resides. Be sure to remove any user authentication or other private information from the URL if present.
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dl">Document location URL</a>
 	 */
-	@SuppressWarnings("unchecked")
 	public ContentInformation documentLocation(final String documentLocation) {
 		this.documentLocation = documentLocation;
 		return this;
@@ -53,7 +60,6 @@ public class ContentInformation {
 	 * @param documentHostName Specifies the hostname from which content was hosted.
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dh">Document Host Name</a>
 	 */
-	@SuppressWarnings("unchecked")
 	public ContentInformation documentHostName(final String documentHostName) {
 		this.documentHostName = documentHostName;
 		return this;
@@ -63,7 +69,6 @@ public class ContentInformation {
 	 * @param documentPath The path portion of the page URL. Should begin with '/'.
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dp">Document Path</a>
 	 */
-	@SuppressWarnings("unchecked")
 	public ContentInformation documentPath(final String documentPath) {
 		this.documentPath = documentPath;
 		return this;
@@ -73,9 +78,26 @@ public class ContentInformation {
 	 * @param documentTitle The title of the page / document.
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dt">Document Title</a>
 	 */
-	@SuppressWarnings("unchecked")
 	public ContentInformation documentTitle(final String documentTitle) {
 		this.documentTitle = documentTitle;
+		return this;
+	}
+
+	/**
+	 * @param contentDescription If not specified, this will default to the unique URL of the page by either using the <code>documentLocation</code> as-is or assembling it from <code>documentHost</code> and <code>documentPath</code>. App tracking makes use of this for the 'Screen Name' of the appview hit.
+	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cd">Content Description</a>
+	 */
+	public ContentInformation contentDescription(final String contentDescription) {
+		this.contentDescription = contentDescription;
+		return this;
+	}
+
+	/**
+	 * @param linkId The ID of a clicked DOM element, used to disambiguate multiple links to the same URL in In-Page Analytics reports when Enhanced Link Attribution is enabled for the property.
+	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#linkid">Link ID</a>
+	 */
+	public ContentInformation linkId(final String linkId) {
+		this.linkId = linkId;
 		return this;
 	}
 
@@ -93,5 +115,13 @@ public class ContentInformation {
 
 	public String getDocumentTitle() {
 		return documentTitle;
+	}
+
+	public String getContentDescription() {
+		return contentDescription;
+	}
+
+	public String getLinkId() {
+		return linkId;
 	}
 }

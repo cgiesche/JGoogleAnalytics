@@ -19,13 +19,8 @@
 
 package de.perdoctus.jga;
 
-import de.perdoctus.jga.Collector;
-import de.perdoctus.jga.Configuration;
-import de.perdoctus.jga.ConfigurationBuilder;
 import de.perdoctus.jga.payload.Event;
 import org.junit.Test;
-
-import java.util.UUID;
 
 /**
  * @author Christoph Giesche

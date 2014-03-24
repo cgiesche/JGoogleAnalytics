@@ -30,12 +30,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class PayloadTestBase {
 
 	protected void assertSingleParamWithUrlEncodedValue(final Payload payload, final String paramName, final String value) throws UnsupportedEncodingException {
-		assertThat(payload.toString()).containsOnlyOnce(paramName + "=");
-		assertThat(payload.toString()).doesNotMatch("[^|&]" + paramName + "=" + urlEncode(value));
+		assertThat(payload.getParametersAsString()).containsOnlyOnce(paramName + "=");
+		assertThat(payload.getParametersAsString()).doesNotMatch("[^|&]" + paramName + "=" + urlEncode(value));
 	}
 
 	protected void assertParamNotPresent(final Payload payload, final String paramName) {
-		assertThat(payload.toString()).doesNotMatch("[^|&]" + paramName + "=");
+		assertThat(payload.getParametersAsString()).doesNotMatch("[^|&]" + paramName + "=");
 	}
 
 	protected String urlEncode(final String string) throws UnsupportedEncodingException {
