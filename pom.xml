@@ -147,4 +147,19 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>perdoctus-releases</id>
+            <name>Perdoctus Releases</name>
+            <url>http://nexus.perdoctus.de/content/repositories/releases</url>
+            <uniqueVersion>false</uniqueVersion>
+        </repository>
+        <snapshotRepository>
+            <id>perdoctus-snapshots</id>
+            <name>Perdoctus Snapshots</name>
+            <url>http://nexus.perdoctus.de/content/repositories/snapshots</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
