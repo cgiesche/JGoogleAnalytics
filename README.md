@@ -46,7 +46,7 @@ collector.collect(new Social("Facebook", "like", "http://www.github.com"));
 ```
 Of course, you can add a lot of additional data to nearly every kind of HitType:
 ```java
-final Event event = new Event("ApplicationMenu", "MouseClicks").label("count").value(4);
+final Event event = new Event("ApplicationMenu", "MouseClicked").label("times").value(4);
 event.with(new AppInfo("MyAppName").version("1.2"));
 
 collector.collect(event);
