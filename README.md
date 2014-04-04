@@ -7,7 +7,7 @@ Features
   * Easy to use (zero configuration)
   * Failsafe: Does not break your application in case of an error (eg. no internet connection available)
   * Customizable: Create custom analytics request by using annotations on pojos
-  * Full-Featured: Supports all Google Analytics Hit-Types:
+  * Full-Featured: Supports all [Google Analytics Hit-Types](https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters):
     * pageview
     * appview
     * event
