@@ -19,24 +19,26 @@
 
 package de.perdoctus.jga.payload.segments;
 
+import de.perdoctus.jga.annotation.AnalyticsParameter;
+import de.perdoctus.jga.payload.AnalyticsParamNames;
+
 /**
- * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#content">Content Information</a>
- *
  * @author Christoph Giesche
+ * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#content">Content Information</a>
  */
 public class ContentInformation {
 
-	public static final String KEY_DOCUMENT_LOCATION = "dl";
-	public static final String KEY_DOCUMENT_HOST_NAME = "dh";
-	public static final String KEY_DOCUMENT_PATH = "dp";
-	public static final String KEY_DOCUMENT_TITLE = "dt";
-	public static final String KEY_CONTENT_DESCRIPTION = "cd";
-	public static final String KEY_LINK_ID = "linkid";
+	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_LOCATION)
 	private String documentLocation;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_HOST_NAME)
 	private String documentHostName;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_PATH)
 	private String documentPath;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_TITLE)
 	private String documentTitle;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_CONTENT_DESCRIPTION)
 	private String contentDescription;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_LINK_ID)
 	private String linkId;
 
 	public ContentInformation() {

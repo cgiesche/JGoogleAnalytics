@@ -19,6 +19,9 @@
 
 package de.perdoctus.jga;
 
+import de.perdoctus.jga.annotation.AnalyticsParameter;
+import de.perdoctus.jga.annotation.Embedded;
+import de.perdoctus.jga.core.PayloadSerializer;
 import de.perdoctus.jga.payload.Payload;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -44,32 +47,45 @@ public class Collector {
 	public static final int MAX_THREADS = 10;
 	public static final int TERMINATION_TIMEOUT = 2000;
 	public static final String USER_AGENT = "Apache-HttpClient/4.3.3 (%s ; %s;)";
+	private final PayloadSerializer payloadSerializer = new PayloadSerializer();
+	private final HttpClient httpClient;
 	private final ExecutorService executorService;
 	private final Configuration configuration;
-	private final HttpClient httpClient;
+	private final SystemInfo systemInfo;
 
 	public Collector(final Configuration configuration) {
+		this(configuration, SystemInfo.autoDetect());
+	}
+
+	public Collector(final Configuration configuration, final SystemInfo systemInfo) {
+		this(configuration, systemInfo, createDefaultHttpClient());
+	}
+
+	public Collector(final Configuration configuration, final SystemInfo systemInfo, final HttpClient httpClient) {
+		this(configuration, systemInfo, httpClient, Executors.newFixedThreadPool(MAX_THREADS));
+	}
+
+	public Collector(final Configuration configuration, final SystemInfo systemInfo, final HttpClient httpClient, final ExecutorService executorService) {
+		this.configuration = configuration;
+		this.systemInfo = systemInfo;
+		this.httpClient = httpClient;
+		this.executorService = executorService;
+
+		registerShutdownHook();
+	}
+
+	private static HttpClient createDefaultHttpClient() {
+		final String userAgentString = String.format(USER_AGENT, System.getProperty("os.name"), System.getProperty("os.arch"));
+
 		final PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager(1000, TimeUnit.MILLISECONDS);
 		poolingHttpClientConnectionManager.setMaxTotal(HTTP_MAX_TOTAL);
 		poolingHttpClientConnectionManager.setDefaultMaxPerRoute(HTTP_MAX_PER_ROUTE);
-		final String userAgentString = String.format(USER_AGENT, System.getProperty("os.name"), System.getProperty("os.arch"));
 
-		this.httpClient = HttpClientBuilder
+		return HttpClientBuilder
 				.create()
 				.setUserAgent(userAgentString)
 				.setConnectionManager(poolingHttpClientConnectionManager)
 				.build();
-
-		this.configuration = configuration;
-		this.executorService = Executors.newFixedThreadPool(MAX_THREADS);
-		registerShutdownHook();
-	}
-
-	public Collector(final Configuration configuration, final HttpClient httpClient, final ExecutorService executorService) {
-		this.httpClient = httpClient;
-		this.configuration = configuration;
-		this.executorService = executorService;
-		registerShutdownHook();
 	}
 
 	private void registerShutdownHook() {
@@ -93,19 +109,50 @@ public class Collector {
 	 * TODO: JavaDoc
 	 */
 	public void collect(final Payload payload) {
-		configure(payload);
+		final AnalyticsRequest analyticsRequest = new AnalyticsRequest(configuration.getTrackingId(), configuration.getProtocolVersion(), configuration.getClientId(), payload);
+		analyticsRequest.with(systemInfo);
 
 		final HttpPost postRequest = new HttpPost(configuration.getEndpointURL());
-		postRequest.setEntity(new StringEntity(payload.getParametersAsString(), "UTF-8"));
+		final String analyticsQueryString = payloadSerializer.serialize(analyticsRequest);
+		postRequest.setEntity(new StringEntity(analyticsQueryString, "UTF-8"));
+
+		LOG.info(postRequest.toString() + " CONTENT " + analyticsQueryString);
 
 		final Thread collectionRequestThread = new Thread(new CollectionRequest(httpClient, postRequest));
 
 		executorService.submit(collectionRequestThread);
 	}
 
-	private void configure(final Payload payload) {
-		payload.addParameter(Payload.KEY_PROTOCOL_VERSION, configuration.getProtocolVersion());
-		payload.addParameter(Payload.KEY_TRACKING_ID, configuration.getTrackingId());
-		payload.addParameter(Payload.KEY_CLIENT_ID, configuration.getClientId());
+	private final class AnalyticsRequest {
+
+		public static final String KEY_TRACKING_ID = "tid";
+		public static final String KEY_PROTOCOL_VERSION = "v";
+		public static final String KEY_CLIENT_ID = "cid";
+
+		@AnalyticsParameter(KEY_TRACKING_ID)
+		private String trackingId;
+		@AnalyticsParameter(KEY_PROTOCOL_VERSION)
+		private String protocolVersion;
+		@AnalyticsParameter(KEY_CLIENT_ID)
+		private String clientId;
+
+		@Embedded
+		private SystemInfo systemInfo;
+
+		@Embedded
+		private Payload payload;
+
+		public AnalyticsRequest(String trackingId, String protocolVersion, String clientId, Payload payload) {
+			this.trackingId = trackingId;
+			this.protocolVersion = protocolVersion;
+			this.clientId = clientId;
+			this.payload = payload;
+		}
+
+		public AnalyticsRequest with(final SystemInfo systemInfo) {
+			this.systemInfo = systemInfo;
+			return this;
+		}
+
 	}
 }

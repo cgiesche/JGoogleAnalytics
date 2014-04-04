@@ -20,6 +20,7 @@
 package de.perdoctus.jga;
 
 import de.perdoctus.jga.payload.Event;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -28,7 +29,14 @@ import org.junit.Test;
 public class ITCollectorTest {
 
 	private static final String FIXED_CLIENT_ID = "385b25e8-b70a-41c3-9d21-c36cf027b812";
-	private final Configuration configuration = ConfigurationBuilder.httpEndpoint("UA-28651183-6").withClientId(FIXED_CLIENT_ID).build();
+	private static final String TRACKING_ID = "UA-28651183-6";
+
+	private final Configuration configuration = new Configuration(TRACKING_ID);
+
+	@Before
+	public void setUp() throws Exception {
+		configuration.setClientId(FIXED_CLIENT_ID);
+	}
 
 	@Test
 	public void testBasicEvent() throws Exception {

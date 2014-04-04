@@ -19,40 +19,39 @@
 
 package de.perdoctus.jga.payload;
 
+import de.perdoctus.jga.SystemInfo;
+import de.perdoctus.jga.annotation.AnalyticsParameter;
+import de.perdoctus.jga.annotation.Embedded;
+import de.perdoctus.jga.payload.segments.AppInfo;
 import de.perdoctus.jga.payload.segments.ContentInformation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Christoph Giesche
  */
-public class Payload<T extends Payload> {
+public abstract class Payload<T extends Payload> {
 
-	public static final String KEY_PROTOCOL_VERSION = "v";
-	public static final String KEY_HITTYPE = "t";
-	public static final String KEY_HITTYPE_NONINTERACTIVE = "ni";
-	public static final String KEY_TRACKING_ID = "tid";
-	public static final String KEY_CLIENT_ID = "cid";
-	public static final String KEY_ANONYMIZE_IP = "aip";
-	public static final String KEY_SESSION_CONTROL = "sc";
 	public static final String UNCHECKED = "unchecked";
 	public static final String KEY_QUEUE_TIME = "qt";
-	private static final Logger LOG = LoggerFactory.getLogger(Payload.class);
-	private final Map<String, String> payloadData = new HashMap<>();
+
+	@AnalyticsParameter(AnalyticsParamNames.KEY_HITTYPE)
+	private final HitType hitType;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_HITTYPE_NONINTERACTIVE)
+	private Integer nonInteractive;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_ANONYMIZE_IP)
+	private Integer anonymizeIP;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_SESSION_CONTROL)
+	private String sessionControl;
+	@AnalyticsParameter(KEY_QUEUE_TIME)
+	private Integer queueTime;
+	@Embedded
+	private ContentInformation contentInformation;
+
+	@Embedded
+	private SystemInfo systemInfo;
+	private AppInfo appInfo;
 
 	protected Payload(final HitType hitType) {
-		payloadData.put(KEY_HITTYPE, hitType.name().toLowerCase());
-	}
-
-	public void addParameter(final String parameterName, final String parameterValue) {
-		if (parameterValue != null && !parameterValue.isEmpty()) {
-			payloadData.put(parameterName, parameterValue);
-		}
+		this.hitType = hitType;
 	}
 
 	/**
@@ -61,7 +60,7 @@ public class Payload<T extends Payload> {
 	 */
 	@SuppressWarnings(UNCHECKED)
 	public T nonInteractive() {
-		addParameter(KEY_HITTYPE_NONINTERACTIVE, "1");
+		this.nonInteractive = 1;
 		return (T) this;
 	}
 
@@ -69,13 +68,8 @@ public class Payload<T extends Payload> {
 	 * <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#content">Content Information</a>
 	 */
 	@SuppressWarnings(UNCHECKED)
-	public T contentInformation(final ContentInformation contentInformation) {
-		addParameter(ContentInformation.KEY_DOCUMENT_HOST_NAME, contentInformation.getDocumentHostName());
-		addParameter(ContentInformation.KEY_DOCUMENT_LOCATION, contentInformation.getDocumentLocation());
-		addParameter(ContentInformation.KEY_DOCUMENT_PATH, contentInformation.getDocumentPath());
-		addParameter(ContentInformation.KEY_DOCUMENT_TITLE, contentInformation.getDocumentTitle());
-		addParameter(ContentInformation.KEY_CONTENT_DESCRIPTION, contentInformation.getContentDescription());
-		addParameter(ContentInformation.KEY_LINK_ID, contentInformation.getLinkId());
+	public T with(final ContentInformation contentInformation) {
+		this.contentInformation = contentInformation;
 		return (T) this;
 	}
 
@@ -84,8 +78,10 @@ public class Payload<T extends Payload> {
 	 *
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#aip">Anonymize IP</a>
 	 */
-	public void anonymizeIP() {
-		addParameter(KEY_ANONYMIZE_IP, "1");
+	@SuppressWarnings("unchecked")
+	public T anonymizeIP() {
+		this.anonymizeIP = 1;
+		return (T) this;
 	}
 
 	/**
@@ -95,7 +91,7 @@ public class Payload<T extends Payload> {
 	 */
 	@SuppressWarnings(UNCHECKED)
 	public T sessionControlStart() {
-		addParameter(KEY_SESSION_CONTROL, "start");
+		this.sessionControl = "start";
 		return (T) this;
 	}
 
@@ -106,7 +102,7 @@ public class Payload<T extends Payload> {
 	 */
 	@SuppressWarnings(UNCHECKED)
 	public T sessionControlEnd() {
-		addParameter(KEY_SESSION_CONTROL, "end");
+		this.sessionControl = "end";
 		return (T) this;
 	}
 
@@ -116,29 +112,30 @@ public class Payload<T extends Payload> {
 	 */
 	@SuppressWarnings(UNCHECKED)
 	public Payload queueTime(int milliseconds) {
-		addParameter(KEY_QUEUE_TIME, String.valueOf(milliseconds));
+		this.queueTime = milliseconds;
 		return (T) this;
 	}
 
-	public String getParametersAsString() {
-		final StringBuilder stringBuilder = new StringBuilder(payloadData.size() * 8);
-		boolean firstEntry = true;
+	public ContentInformation getContentInformation() {
+		return contentInformation;
+	}
 
-		for (Map.Entry<String, String> entry : payloadData.entrySet()) {
-			if (firstEntry) {
-				firstEntry = false;
-			} else {
-				stringBuilder.append('&');
-			}
-			try {
-				final String encodedValue = URLEncoder.encode(entry.getValue(), "UTF-8");
-				stringBuilder.append(entry.getKey()).append("=").append(encodedValue);
-			} catch (UnsupportedEncodingException e) {
-				LOG.error("Failed to URLEncode " + entry.getValue(), e);
-			}
-		}
+	public Payload with(final AppInfo appInfo) {
+		this.appInfo = appInfo;
+		return this;
+	}
 
-		return stringBuilder.toString();
+	public AppInfo getAppInfo() {
+		return appInfo;
+	}
+
+
+	public SystemInfo getSystemInfo() {
+		return systemInfo;
+	}
+
+	public HitType getHitType() {
+		return hitType;
 	}
 
 	/**
@@ -153,5 +150,10 @@ public class Payload<T extends Payload> {
 		SOCIAL,
 		EXCEPTION,
 		TIMING;
+
+		@Override
+		public String toString() {
+			return name().toLowerCase();
+		}
 	}
 }

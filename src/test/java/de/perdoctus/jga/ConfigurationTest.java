@@ -31,7 +31,7 @@ public class ConfigurationTest {
 	public static final String TRACKING_ID = "UA-123456-1";
 	public static final String ENDPOINT_URL = "http://foo.bar";
 	private static final String CLIENT_ID = "12345";
-	private static final String PROTOCOL_VERSION = "1";
+	private static final String PROTOCOL_VERSION = "222";
 
 	@Test
 	public void testConstructor() throws Exception {
@@ -46,9 +46,21 @@ public class ConfigurationTest {
 	}
 
 	@Test
+	public void testConstructor_Defaults() throws Exception {
+		// when
+		final Configuration configuration = new Configuration(TRACKING_ID);
+
+		// then
+		assertThat(configuration.getTrackingId()).isEqualTo(TRACKING_ID);
+		assertThat(configuration.getEndpointURL()).isEqualTo(Configuration.DEFAULT_ENDPOINT_HTTP);
+		assertThat(configuration.getClientId()).isNotNull();
+		assertThat(configuration.getProtocolVersion()).isEqualTo(Configuration.DEFAULT_PROTOCOL_VERSION);
+	}
+
+	@Test
 	public void testProtocolVersion() throws Exception {
 		// given
-		final Configuration configuration = new Configuration(TRACKING_ID, ENDPOINT_URL, PROTOCOL_VERSION, CLIENT_ID);
+		final Configuration configuration = new Configuration("foo");
 
 		// when
 		configuration.setProtocolVersion("4");
@@ -60,7 +72,7 @@ public class ConfigurationTest {
 	@Test
 	public void testClientId() throws Exception {
 		// given
-		final Configuration configuration = new Configuration(TRACKING_ID, ENDPOINT_URL, PROTOCOL_VERSION, CLIENT_ID);
+		final Configuration configuration = new Configuration("foo");
 
 		// when
 		configuration.setClientId("FooBar");

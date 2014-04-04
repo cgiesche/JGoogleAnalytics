@@ -19,6 +19,7 @@
 
 package de.perdoctus.jga.payload;
 
+import de.perdoctus.jga.payload.segments.AppInfo;
 import de.perdoctus.jga.payload.segments.ContentInformation;
 import org.junit.Test;
 
@@ -27,140 +28,46 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Christoph Giesche
  */
-public class PayloadTest extends PayloadTestBase {
+public class PayloadTest {
 
 	@Test
-	public void testConstructor() throws Exception {
+	public void testConstroctor() throws Exception {
 		// when
-		final Payload payload = new Payload(Payload.HitType.APPVIEW);
+		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		};
 
 		// then
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_HITTYPE, "appview");
-	}
-
-	@Test
-	public void testAddParameter() throws Exception {
-		// given
-		final Payload payload = new Payload(Payload.HitType.EVENT);
-
-		// when
-		payload.addParameter("foo", "bar");
-
-		// then
-		assertSingleParamWithUrlEncodedValue(payload, "foo", "bar");
-	}
-
-	@Test
-	public void testAddEmptyParameter() throws Exception {
-		// given
-		final Payload payload = new Payload(Payload.HitType.EVENT);
-
-		// when
-		payload.addParameter("foo", "bar");
-
-		// then
-		assertParamNotPresent(payload, "foo");
-	}
-
-	@Test
-	public void testNonInteractive() throws Exception {
-		// given
-		final Payload payload = new Payload(Payload.HitType.APPVIEW);
-
-		// when
-		payload.nonInteractive();
-
-		// then
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_HITTYPE_NONINTERACTIVE, "1");
-	}
-
-	@Test
-	public void testAnonymizeIP() throws Exception {
-		// given
-		final Payload payload = new Payload(Payload.HitType.APPVIEW);
-
-		// when
-		payload.anonymizeIP();
-
-		// then
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_ANONYMIZE_IP, "1");
-	}
-
-	@Test
-	public void testSessionStart() throws Exception {
-		// given
-		final Payload payload = new Payload(Payload.HitType.APPVIEW);
-
-		// when
-		payload.sessionControlStart();
-
-		// then
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_SESSION_CONTROL, "start");
-	}
-
-	@Test
-	public void testSessionEnd() throws Exception {
-		// given
-		final Payload payload = new Payload(Payload.HitType.APPVIEW);
-
-		// when
-		payload.sessionControlEnd();
-
-		// then
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_SESSION_CONTROL, "end");
-	}
-
-	@Test
-	public void testQueueTime() throws Exception {
-		// given
-		final Payload payload = new Payload(Payload.HitType.APPVIEW);
-
-		// when
-		final Payload resultPayload = payload.queueTime(3);
-
-		// then
-		assertThat(resultPayload).isSameAs(payload);
-		assertSingleParamWithUrlEncodedValue(payload, Payload.KEY_QUEUE_TIME, "5");
-
+		assertThat(payload).isNotNull();
+		assertThat(payload.getHitType()).isEqualTo(Payload.HitType.ITEM);
 	}
 
 	@Test
 	public void testContentInformation() throws Exception {
 		// given
-		final Payload payload = new Payload(Payload.HitType.APPVIEW);
+		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		};
+		final ContentInformation givenCallbackInformation = new ContentInformation();
 
 		// when
-		final ContentInformation contentInformation = new ContentInformation()
-				.documentHostName("dHostname")
-				.documentLocation("/dLoc")
-				.documentPath("/dPath")
-				.documentTitle("Schöner Titel")
-				.contentDescription("schöner content")
-				.linkId("lünk");
-		payload.contentInformation(contentInformation);
+		final Payload resultingPayload = payload.with(givenCallbackInformation);
 
 		// then
-		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_DOCUMENT_HOST_NAME, "dHostname");
-		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_DOCUMENT_LOCATION, "/dLoc");
-		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_DOCUMENT_PATH, "/dPath");
-		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_DOCUMENT_TITLE, "Schöner Titel");
-		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_CONTENT_DESCRIPTION, "schöner content");
-		assertSingleParamWithUrlEncodedValue(payload, ContentInformation.KEY_LINK_ID, "lünk");
+		assertThat(resultingPayload).isSameAs(payload);
+		assertThat(payload.getContentInformation()).isSameAs(givenCallbackInformation);
 	}
 
 	@Test
-	public void testEmptyContentInformation() throws Exception {
+	public void testAppInfo() throws Exception {
 		// given
-		final Payload payload = new Payload(Payload.HitType.APPVIEW);
+		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		};
+		final AppInfo givenAppInfo = new AppInfo();
 
 		// when
-		payload.contentInformation(new ContentInformation());
+		final Payload resultingPayload = payload.with(givenAppInfo);
 
 		// then
-		assertParamNotPresent(payload, ContentInformation.KEY_DOCUMENT_HOST_NAME);
-		assertParamNotPresent(payload, ContentInformation.KEY_DOCUMENT_LOCATION);
-		assertParamNotPresent(payload, ContentInformation.KEY_DOCUMENT_PATH);
-		assertParamNotPresent(payload, ContentInformation.KEY_DOCUMENT_TITLE);
+		assertThat(resultingPayload).isSameAs(payload);
+		assertThat(payload.getAppInfo()).isSameAs(givenAppInfo);
 	}
-
 }

@@ -19,15 +19,21 @@
 
 package de.perdoctus.jga.payload;
 
+import de.perdoctus.jga.annotation.AnalyticsParameter;
+
 /**
  * @author Christoph Giesche
  */
 public class Event extends Payload<Event> {
 
-	public static final String KEY_EVENT_CATEGORY = "ec";
-	public static final String KEY_EVENT_ACTION = "ea";
-	public static final String KEY_EVENT_LABEL = "el";
-	public static final String KEY_EVENT_VALUE = "ev";
+	@AnalyticsParameter(AnalyticsParamNames.KEY_EVENT_CATEGORY)
+	private final String category;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_EVENT_ACTION)
+	private final String action;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_EVENT_LABEL)
+	private String label;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_EVENT_VALUE)
+	private Integer value;
 
 	/**
 	 * @param category Specifies the event category. Must not be empty.
@@ -37,8 +43,9 @@ public class Event extends Payload<Event> {
 	 */
 	public Event(final String category, final String action) {
 		super(HitType.EVENT);
-		addParameter(KEY_EVENT_CATEGORY, category);
-		addParameter(KEY_EVENT_ACTION, action);
+
+		this.category = category;
+		this.action = action;
 	}
 
 	/**
@@ -46,7 +53,7 @@ public class Event extends Payload<Event> {
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el">Event Label</a>
 	 */
 	public Event label(final String label) {
-		addParameter(KEY_EVENT_LABEL, label);
+		this.label = label;
 		return this;
 	}
 
@@ -55,8 +62,23 @@ public class Event extends Payload<Event> {
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev">Event Value</a>
 	 */
 	public Event value(final int value) {
-		addParameter(KEY_EVENT_VALUE, String.valueOf(value));
+		this.value = value;
 		return this;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public Integer getValue() {
+		return value;
+	}
 }

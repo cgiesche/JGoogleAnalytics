@@ -19,27 +19,42 @@
 
 package de.perdoctus.jga.payload;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import org.junit.Test;
+
+import java.util.Currency;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Christoph Giesche
  */
-public abstract class PayloadTestBase {
+public class ECommerceTest {
 
-	protected void assertSingleParamWithUrlEncodedValue(final Payload payload, final String paramName, final String value) throws UnsupportedEncodingException {
-		assertThat(payload.getParametersAsString()).containsOnlyOnce(paramName + "=");
-		assertThat(payload.getParametersAsString()).doesNotMatch("[^|&]" + paramName + "=" + urlEncode(value));
+	@Test
+	public void testConstructor() throws Exception {
+		// when
+		final ECommerce eCommerce = new ECommerce(Payload.HitType.TRANSACTION, "TAID") {
+		};
+
+		// then
+		assertThat(eCommerce).isNotNull();
+		assertThat(eCommerce.getTransactionId()).isEqualTo("TAID");
+
 	}
 
-	protected void assertParamNotPresent(final Payload payload, final String paramName) {
-		assertThat(payload.getParametersAsString()).doesNotMatch("[^|&]" + paramName + "=");
-	}
+	@Test
+	public void testCurrency() throws Exception {
+		// given
+		final ECommerce eCommerce = new ECommerce(Payload.HitType.TRANSACTION, "TAID") {
+		};
 
-	protected String urlEncode(final String string) throws UnsupportedEncodingException {
-		return URLEncoder.encode(string, "UTF-8");
-	}
+		// when
+		final Currency currency = Currency.getInstance(Locale.GERMANY);
+		final ECommerce resultingTransaction = eCommerce.currency(currency);
 
+		// then
+		assertThat(resultingTransaction).isSameAs(eCommerce);
+		assertThat(eCommerce.getCurrency()).isEqualTo(currency);
+	}
 }
