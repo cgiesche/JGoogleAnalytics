@@ -21,22 +21,26 @@ package de.perdoctus.jga.payload;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author Christoph Giesche
  */
-public class EventTest extends PayloadTestBase {
+public class EventTest {
 
-	public static final String CATEGORY = "categöry";
-	public static final String ACTION = "äction";
+	private static final String CATEGORY = "categoryName";
+	private static final String ACTION = "actionName";
 
 	@Test
-	public void testConstructor() throws Exception {
+	public void testConstroctor() throws Exception {
 		// when
 		final Event event = new Event(CATEGORY, ACTION);
 
 		// then
-		assertSingleParamWithUrlEncodedValue(event, Event.KEY_EVENT_CATEGORY, "categöry");
-		assertSingleParamWithUrlEncodedValue(event, Event.KEY_EVENT_ACTION, "äction");
+		assertThat(event).isNotNull();
+		assertThat(event.getHitType()).isEqualTo(Payload.HitType.EVENT);
+		assertThat(event.getCategory()).isEqualTo(CATEGORY);
+		assertThat(event.getAction()).isEqualTo(ACTION);
 	}
 
 	@Test
@@ -45,12 +49,11 @@ public class EventTest extends PayloadTestBase {
 		final Event event = new Event(CATEGORY, ACTION);
 
 		// when
-		event.label("läbel");
+		final Event resultingEvent = event.label("labelText");
 
 		// then
-		assertSingleParamWithUrlEncodedValue(event, Event.KEY_EVENT_CATEGORY, "categöry");
-		assertSingleParamWithUrlEncodedValue(event, Event.KEY_EVENT_ACTION, "äction");
-		assertSingleParamWithUrlEncodedValue(event, Event.KEY_EVENT_LABEL, "läbel");
+		assertThat(resultingEvent).isEqualTo(event);
+		assertThat(resultingEvent.getLabel()).isEqualTo("labelText");
 	}
 
 	@Test
@@ -59,11 +62,10 @@ public class EventTest extends PayloadTestBase {
 		final Event event = new Event(CATEGORY, ACTION);
 
 		// when
-		event.value(22);
+		final Event resultingEvent = event.value(22);
 
 		// then
-		assertSingleParamWithUrlEncodedValue(event, Event.KEY_EVENT_CATEGORY, "categöry");
-		assertSingleParamWithUrlEncodedValue(event, Event.KEY_EVENT_ACTION, "äction");
-		assertSingleParamWithUrlEncodedValue(event, Event.KEY_EVENT_VALUE, "22");
+		assertThat(resultingEvent).isEqualTo(event);
+		assertThat(resultingEvent.getValue()).isEqualTo(22);
 	}
 }

@@ -28,9 +28,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Christoph Giesche
@@ -40,16 +43,20 @@ public class CollectorTest {
 
 	@Mock
 	private HttpClient httpClientMock;
+
 	@Mock
 	private ExecutorService executorServiceMock;
 
-	private Configuration configurationMock = ConfigurationBuilder.httpEndpoint("foo").build();
+	@Mock
+	private Configuration configurationMock;
 
 	private Collector collector;
 
 	@Before
 	public void setUp() throws Exception {
-		this.collector = new Collector(configurationMock, httpClientMock, executorServiceMock);
+		collector = new Collector(configurationMock, SystemInfo.autoDetect(), httpClientMock, executorServiceMock);
+		when(configurationMock.getEndpointURL()).thenReturn("http://www.foo.bar");
+		when(executorServiceMock.awaitTermination(anyLong(), any(TimeUnit.class))).thenReturn(true);
 	}
 
 	@Test
@@ -67,9 +74,28 @@ public class CollectorTest {
 		verify(executorServiceMock).submit(any(CollectionRequest.class));
 	}
 
-	public static void main(String[] args) {
-		final String USER_AGENT = "Apache-HttpClient/4.3.3 (%s ; %s;)";
-		final String userAgentString = String.format(USER_AGENT, System.getProperty("os.name"), System.getProperty("os.arch"));
-		System.out.println(userAgentString);
+	@Test
+	public void testCollectEvent_TerminationTimeout() throws Exception {
+		// given
+		when(executorServiceMock.awaitTermination(anyLong(), any(TimeUnit.class))).thenReturn(false);
+
+		// when
+		collector.collect(new Event("Test", "Action"));
+
+		// then
+		verify(executorServiceMock).submit(any(CollectionRequest.class));
 	}
+
+	@Test
+	public void testCollectEvent_TerminationInterrupted() throws Exception {
+		// given
+		when(executorServiceMock.awaitTermination(anyLong(), any(TimeUnit.class))).thenThrow(new InterruptedException());
+
+		// when
+		collector.collect(new Event("Test", "Action"));
+
+		// then
+		verify(executorServiceMock).submit(any(CollectionRequest.class));
+	}
+
 }

@@ -17,29 +17,37 @@
  * along with JGoogleAnalytics.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.perdoctus.jga.payload;
+package de.perdoctus.jga.payload.types;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Christoph Giesche
  */
-public abstract class PayloadTestBase {
+public class BooleanValueTest {
 
-	protected void assertSingleParamWithUrlEncodedValue(final Payload payload, final String paramName, final String value) throws UnsupportedEncodingException {
-		assertThat(payload.getParametersAsString()).containsOnlyOnce(paramName + "=");
-		assertThat(payload.getParametersAsString()).doesNotMatch("[^|&]" + paramName + "=" + urlEncode(value));
+	@Test
+	public void testTrue() throws Exception {
+		// given
+
+		// when
+		final BooleanValue booleanValue = BooleanValue.valueOf(true);
+
+		// then
+		assertThat(booleanValue.toString()).isEqualTo("1");
 	}
 
-	protected void assertParamNotPresent(final Payload payload, final String paramName) {
-		assertThat(payload.getParametersAsString()).doesNotMatch("[^|&]" + paramName + "=");
-	}
+	@Test
+	public void testFalse() throws Exception {
+		// given
 
-	protected String urlEncode(final String string) throws UnsupportedEncodingException {
-		return URLEncoder.encode(string, "UTF-8");
+		// when
+		final BooleanValue booleanValue = BooleanValue.valueOf(false);
+
+		// then
+		assertThat(booleanValue.toString()).isEqualTo("0");
 	}
 
 }

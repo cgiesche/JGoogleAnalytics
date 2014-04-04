@@ -103,7 +103,7 @@ public class CollectionRequestTest {
 	}
 
 	@Test
-	public void testRun_IOException_NoException() throws Exception {
+	public void testRun_IOException_Consumed() throws Exception {
 		// given
 		final CollectionRequest collectionRequest = new CollectionRequest(httpClientMock, httpPostMock);
 		when(httpClientMock.execute(httpPostMock)).thenThrow(new IOException());
