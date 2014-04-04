@@ -17,6 +17,18 @@ Features
     * exception
     * timing
 
+Installation
+------------
+As long as this project has not been released (see Milestones), you have to build it by yourself. The only things you need are:
+
+  * a git client (to checkout sources ;)
+  * installed JDK >= 1.7
+  * a working Apache Maven installation
+
+To build and install the library, simply clone the git repository and run:
+
+    mvn clean install
+
 Example Usage
 -------------
 JGoogleAnalytics is designed to be full featured but still easy to use. Most settings have useful defaults - the only thing you have to provide is your Google Analytics tracking id.
