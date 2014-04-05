@@ -19,6 +19,7 @@
 
 package de.perdoctus.jga.payload;
 
+import de.perdoctus.jga.payload.types.BooleanValue;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,10 +42,39 @@ public class AnalyticsExceptionTest {
 	@Test
 	public void testConstructor_Exception() throws Exception {
 		// when
-		final AnalyticsException analyticsException = new AnalyticsException();
+		final AnalyticsException analyticsException = new AnalyticsException(new IllegalArgumentException("Foo"));
 
 		// then
 		assertThat(analyticsException).isNotNull();
 		assertThat(analyticsException.getHitType()).isEqualTo(Payload.HitType.EXCEPTION);
+		assertThat(analyticsException.getDescription()).isEqualTo("IllegalArgumentException");
+	}
+
+	@Test
+	public void testDescription() throws Exception {
+		// given
+		final AnalyticsException analyticsException = new AnalyticsException();
+		final String exceptionDescription = "DatabaseError";
+
+		// when
+		final AnalyticsException resultingAnalyticsException = analyticsException.description(exceptionDescription);
+
+		// then
+		assertThat(resultingAnalyticsException).isSameAs(analyticsException);
+		assertThat(analyticsException.getDescription()).isEqualTo(exceptionDescription);
+	}
+
+	@Test
+	public void testFatal() throws Exception {
+		// given
+		final AnalyticsException analyticsException = new AnalyticsException();
+
+		// when
+		final BooleanValue booleanValue = BooleanValue.TRUE;
+		final AnalyticsException resultingAnalyticsException = analyticsException.fatal(booleanValue);
+
+		// then
+		assertThat(resultingAnalyticsException).isSameAs(analyticsException);
+		assertThat(analyticsException.getFatal()).isEqualTo(booleanValue);
 	}
 }

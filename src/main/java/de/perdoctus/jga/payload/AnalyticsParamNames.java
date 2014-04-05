@@ -78,4 +78,6 @@ public final class AnalyticsParamNames {
 	public static final String KEY_TIMING_REDIRECT_RESPONSE_TIME = "rrt";
 	public static final String KEY_TIMING_TCP_CONNECT_TIME = "tcp";
 	public static final String KEY_TIMING_SERVER_RESPONSE_TIME = "srt";
+	public static final String KEY_EXCEPTION_DESCRIPTION = "exd";
+	public static final String KEY_EXCEPTION_FATAL = "exf";
 }

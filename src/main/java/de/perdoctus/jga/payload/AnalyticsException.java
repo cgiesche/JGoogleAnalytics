@@ -19,14 +19,43 @@
 
 package de.perdoctus.jga.payload;
 
+import de.perdoctus.jga.annotation.AnalyticsParameter;
+import de.perdoctus.jga.payload.types.BooleanValue;
+
 /**
  * @author Christoph Giesche
  */
 public class AnalyticsException extends Payload<AnalyticsException> {
 
+	@AnalyticsParameter(AnalyticsParamNames.KEY_EXCEPTION_DESCRIPTION)
+	private String description;
+	@AnalyticsParameter(AnalyticsParamNames.KEY_EXCEPTION_FATAL)
+	private BooleanValue fatal;
+
 	public AnalyticsException() {
 		super(HitType.EXCEPTION);
 	}
 
+	public AnalyticsException(final Exception exception) {
+		this();
+		description(exception.getClass().getSimpleName());
+	}
 
+	public AnalyticsException description(final String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public AnalyticsException fatal(final BooleanValue fatal) {
+		this.fatal = fatal;
+		return this;
+	}
+
+	public BooleanValue getFatal() {
+		return fatal;
+	}
 }
