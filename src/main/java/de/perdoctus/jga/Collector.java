@@ -46,7 +46,7 @@ public class Collector {
 	public static final int HTTP_MAX_PER_ROUTE = 10;
 	public static final int MAX_THREADS = 10;
 	public static final int TERMINATION_TIMEOUT = 2000;
-	public static final String USER_AGENT = "Apache-HttpClient/4.3.3 (%s ; %s;)";
+	public static final String USER_AGENT = "Apache-HttpClient/4.3.3 (%s/%s; %s)";
 	private final PayloadSerializer payloadSerializer = new PayloadSerializer();
 	private final HttpClient httpClient;
 	private final ExecutorService executorService;
@@ -75,7 +75,7 @@ public class Collector {
 	}
 
 	private static HttpClient createDefaultHttpClient() {
-		final String userAgentString = String.format(USER_AGENT, System.getProperty("os.name"), System.getProperty("os.arch"));
+		final String userAgentString = String.format(USER_AGENT, System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch"));
 
 		final PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager(1000, TimeUnit.MILLISECONDS);
 		poolingHttpClientConnectionManager.setMaxTotal(HTTP_MAX_TOTAL);
