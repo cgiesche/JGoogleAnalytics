@@ -41,12 +41,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class Collector {
 
-	private static final Logger LOG = LoggerFactory.getLogger(Collector.class);
 	public static final int HTTP_MAX_TOTAL = 10;
 	public static final int HTTP_MAX_PER_ROUTE = 10;
 	public static final int MAX_THREADS = 10;
 	public static final int TERMINATION_TIMEOUT = 2000;
 	public static final String USER_AGENT = "Apache-HttpClient/4.3.3 (%s/%s; %s)";
+	private static final Logger LOG = LoggerFactory.getLogger(Collector.class);
 	private final PayloadSerializer payloadSerializer = new PayloadSerializer();
 	private final HttpClient httpClient;
 	private final ExecutorService executorService;

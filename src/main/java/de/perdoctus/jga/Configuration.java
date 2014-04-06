@@ -32,31 +32,6 @@ public class Configuration {
 	static final String DEFAULT_PROTOCOL_VERSION = "1";
 
 	private static final String PREF_CLIENT_ID = "clientId";
-
-	public String getTrackingId() {
-		return trackingId;
-	}
-
-	public String getEndpointURL() {
-		return endpointURL;
-	}
-
-	public String getProtocolVersion() {
-		return protocolVersion;
-	}
-
-	public void setProtocolVersion(String protocolVersion) {
-		this.protocolVersion = protocolVersion;
-	}
-
-	public String getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-
 	private final String trackingId;
 	private final String endpointURL;
 	private String protocolVersion;
@@ -86,5 +61,29 @@ public class Configuration {
 			clientId = newClientId;
 		}
 		return clientId;
+	}
+
+	public String getTrackingId() {
+		return trackingId;
+	}
+
+	public String getEndpointURL() {
+		return endpointURL;
+	}
+
+	public String getProtocolVersion() {
+		return protocolVersion;
+	}
+
+	public void setProtocolVersion(String protocolVersion) {
+		this.protocolVersion = protocolVersion;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 }

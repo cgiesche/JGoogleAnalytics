@@ -32,8 +32,8 @@ import java.util.List;
 public class PayloadSerializer {
 
 	public static final char SEPARATOR_CHAR = '&';
-	private final static Logger LOG = LoggerFactory.getLogger(PayloadSerializer.class);
 	public static final String EMPTY_STRING = "";
+	private final static Logger LOG = LoggerFactory.getLogger(PayloadSerializer.class);
 	private final AnalyticsParamResolver analyticsParamResolver = new AnalyticsParamResolver();
 
 	public String serialize(final Object content) {
