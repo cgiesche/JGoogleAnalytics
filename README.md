@@ -2,8 +2,8 @@ JGoogleAnalytics
 ================
 JGoogleAnalytics is a Java library that allows you to easily collect usage statistics for applications via Google Analytics.
 
-[![Build Status](http://travis-ci.org/cgiesche/JGoogleAnalytics.svg?branch=master)](https://travis-ci.org/cgiesche/JGoogleAnalytics)
-[![Coverage Status](http://coveralls.io/repos/cgiesche/JGoogleAnalytics/badge.png)](https://coveralls.io/r/cgiesche/JGoogleAnalytics)
+[![Build Status](https://travis-ci.org/cgiesche/JGoogleAnalytics.svg?branch=master)](https://travis-ci.org/cgiesche/JGoogleAnalytics)
+[![Coverage Status](https://coveralls.io/repos/cgiesche/JGoogleAnalytics/badge.png?branch=master)](https://coveralls.io/r/cgiesche/JGoogleAnalytics?branch=master)
 
 Features
 --------
