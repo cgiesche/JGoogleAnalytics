@@ -47,6 +47,10 @@
         <developerConnection>https://github.com/cgiesche/JGoogleAnalytics.git</developerConnection>
     </scm>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <developers>
         <developer>
             <id>cgiesche</id>
