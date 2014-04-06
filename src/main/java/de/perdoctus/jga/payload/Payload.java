@@ -19,7 +19,6 @@
 
 package de.perdoctus.jga.payload;
 
-import de.perdoctus.jga.SystemInfo;
 import de.perdoctus.jga.annotation.AnalyticsParameter;
 import de.perdoctus.jga.annotation.Embedded;
 import de.perdoctus.jga.payload.segments.AppInfo;
@@ -45,9 +44,7 @@ public abstract class Payload<T extends Payload> {
 	private Integer queueTime;
 	@Embedded
 	private ContentInformation contentInformation;
-
 	@Embedded
-	private SystemInfo systemInfo;
 	private AppInfo appInfo;
 
 	protected Payload(final HitType hitType) {
@@ -127,11 +124,6 @@ public abstract class Payload<T extends Payload> {
 
 	public AppInfo getAppInfo() {
 		return appInfo;
-	}
-
-
-	public SystemInfo getSystemInfo() {
-		return systemInfo;
 	}
 
 	public HitType getHitType() {
