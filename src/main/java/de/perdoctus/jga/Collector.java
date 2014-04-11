@@ -116,7 +116,7 @@ public class Collector {
 		final String analyticsQueryString = payloadSerializer.serialize(analyticsRequest);
 		postRequest.setEntity(new StringEntity(analyticsQueryString, "UTF-8"));
 
-		LOG.info(postRequest.toString() + " CONTENT " + analyticsQueryString);
+		LOG.debug(postRequest.toString() + " CONTENT " + analyticsQueryString);
 
 		final Thread collectionRequestThread = new Thread(new CollectionRequest(httpClient, postRequest));
 

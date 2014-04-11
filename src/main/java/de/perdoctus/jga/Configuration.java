@@ -19,6 +19,9 @@
 
 package de.perdoctus.jga;
 
+import de.perdoctus.jga.core.UserPreferences;
+
+import java.io.IOException;
 import java.util.UUID;
 import java.util.prefs.Preferences;
 
@@ -50,13 +53,14 @@ public class Configuration {
 
 	private static String determineClientId() {
 		String clientId;
-		final Preferences preferences = Preferences.userNodeForPackage(Configuration.class);
 		final String newClientId = UUID.randomUUID().toString();
 		try {
-			if (!preferences.nodeExists(PREF_CLIENT_ID)) {
+			final UserPreferences preferences = new UserPreferences("ga4j");
+			if (!preferences.containsKey(PREF_CLIENT_ID)) {
 				preferences.put(PREF_CLIENT_ID, newClientId);
+				preferences.save();
 			}
-			clientId = preferences.get(PREF_CLIENT_ID, newClientId);
+			clientId = preferences.getProperty(PREF_CLIENT_ID);
 		} catch (final Exception e) {
 			clientId = newClientId;
 		}
