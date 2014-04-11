@@ -61,7 +61,7 @@ public class SystemInfo {
 		final SystemInfo systemInfo = new SystemInfo()
 				.userLanguage(Locale.getDefault())
 				.documentEncoding(System.getProperty("file.encoding"))
-				.javaEnabled(BooleanValue.valueOf(true));
+				.javaEnabled(BooleanValue.TRUE);
 
 		try {
 			final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
