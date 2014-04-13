@@ -21,9 +21,7 @@ package de.perdoctus.jga;
 
 import de.perdoctus.jga.core.UserPreferences;
 
-import java.io.IOException;
 import java.util.UUID;
-import java.util.prefs.Preferences;
 
 /**
  * @author Christoph Giesche

@@ -19,16 +19,13 @@
 
 package de.perdoctus.jga;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * @author Christoph Giesche
@@ -36,33 +33,41 @@ import java.io.IOException;
 public class CollectionRequest implements Runnable {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Collector.class);
-	private final HttpClient httpClient;
-	private final HttpRequestBase httpRequest;
+	private final String targetURL;
+	private final String requestData;
 
-	public CollectionRequest(final HttpClient httpClient, final HttpRequestBase httpRequest) {
-		this.httpClient = httpClient;
-		this.httpRequest = httpRequest;
+	public CollectionRequest(final String targetURL, final String data) {
+		this.targetURL = targetURL;
+		this.requestData = data;
 	}
 
 	@Override
 	public void run() {
 		try {
-			final HttpResponse response = httpClient.execute(httpRequest);
-			final StatusLine statusLine = response.getStatusLine();
-			final int statusCode = statusLine.getStatusCode();
-			if (statusCode != HttpStatus.SC_OK) {
-				LOG.warn("Got Status-Code " + statusCode + ": " + statusLine.getReasonPhrase());
-			}
+			final URL url = new URL(targetURL);
+			final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			postData(urlConnection);
 
-			// Consume responseEntity, if any.
-			final HttpEntity responseEntity = response.getEntity();
-			if (responseEntity != null) {
-				responseEntity.getContent().close();
-			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOG.error("Failed to execute collection request.", e);
-		} finally {
-			httpRequest.releaseConnection();
 		}
+	}
+
+	protected void postData(final HttpURLConnection urlConnection) throws IOException {
+		urlConnection.setRequestMethod("POST");
+		urlConnection.setDoOutput(true);
+		urlConnection.setUseCaches(false);
+
+		try (OutputStream outputStream = urlConnection.getOutputStream()) {
+			outputStream.write(requestData.getBytes("UTF-8"));
+		}
+
+		final int responseCode = urlConnection.getResponseCode();
+
+		if (responseCode != HttpURLConnection.HTTP_OK) {
+			LOG.warn("Got Status-Code " + responseCode);
+		}
+
+		urlConnection.disconnect();
 	}
 }

@@ -20,7 +20,6 @@
 package de.perdoctus.jga;
 
 import de.perdoctus.jga.payload.Event;
-import org.apache.http.client.HttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,9 +41,6 @@ import static org.mockito.Mockito.when;
 public class CollectorTest {
 
 	@Mock
-	private HttpClient httpClientMock;
-
-	@Mock
 	private ExecutorService executorServiceMock;
 
 	@Mock
@@ -54,7 +50,7 @@ public class CollectorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		collector = new Collector(configurationMock, SystemInfo.autoDetect(), httpClientMock, executorServiceMock);
+		collector = new Collector(configurationMock, SystemInfo.autoDetect(), executorServiceMock);
 		when(configurationMock.getEndpointURL()).thenReturn("http://www.foo.bar");
 		when(executorServiceMock.awaitTermination(anyLong(), any(TimeUnit.class))).thenReturn(true);
 	}

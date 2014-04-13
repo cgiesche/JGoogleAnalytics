@@ -19,19 +19,13 @@
 
 package de.perdoctus.jga;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 
 import static org.mockito.Mockito.*;
 
@@ -41,77 +35,61 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class CollectionRequestTest {
 
-	@Mock
-	private HttpClient httpClientMock;
-	@Mock
-	private HttpPost httpPostMock;
-
 	@Test
-	public void testRun_OK_NoEntity() throws Exception {
+	public void testPostData_Success() throws Exception {
 		// given
-		final CollectionRequest collectionRequest = new CollectionRequest(httpClientMock, httpPostMock);
-		final HttpResponse httpResponseMock = mock(HttpResponse.class);
-		when(httpClientMock.execute(httpPostMock)).thenReturn(httpResponseMock);
-		final StatusLine statusLineMock = mock(StatusLine.class);
-		when(httpResponseMock.getStatusLine()).thenReturn(statusLineMock);
-		when(statusLineMock.getStatusCode()).thenReturn(HttpStatus.SC_OK);
+		final CollectionRequest collectionRequest = new CollectionRequest("http://www.foo.bar", "bla");
+		final HttpURLConnection httpURLConnectionMock = mock(HttpURLConnection.class);
+		final OutputStream outputStreamMock = mock(OutputStream.class);
+
+		when(httpURLConnectionMock.getOutputStream()).thenReturn(outputStreamMock);
+		when(httpURLConnectionMock.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
 
 		// when
-		collectionRequest.run();
+		collectionRequest.postData(httpURLConnectionMock);
 
 		// then
-		verify(httpPostMock).releaseConnection();
+		verify(httpURLConnectionMock).setDoOutput(true);
+		verify(httpURLConnectionMock).setRequestMethod("POST");
+
+		verify(outputStreamMock).write("bla".getBytes("UTF-8"));
+		verify(outputStreamMock).close();
 	}
 
 	@Test
-	public void testRun_OK_WithEntity() throws Exception {
+	public void testPostData_BadStatus() throws Exception {
 		// given
-		final CollectionRequest collectionRequest = new CollectionRequest(httpClientMock, httpPostMock);
-		final HttpResponse httpResponseMock = mock(HttpResponse.class);
-		when(httpClientMock.execute(httpPostMock)).thenReturn(httpResponseMock);
-		final StatusLine statusLineMock = mock(StatusLine.class);
-		when(httpResponseMock.getStatusLine()).thenReturn(statusLineMock);
-		when(statusLineMock.getStatusCode()).thenReturn(HttpStatus.SC_OK);
-		final HttpEntity httpEntityMock = mock(HttpEntity.class);
-		when(httpResponseMock.getEntity()).thenReturn(httpEntityMock);
-		final InputStream inputStreamMock = mock(InputStream.class);
-		when(httpEntityMock.getContent()).thenReturn(inputStreamMock);
+		final CollectionRequest collectionRequest = new CollectionRequest("http://www.foo.bar", "bla");
+		final HttpURLConnection httpURLConnectionMock = mock(HttpURLConnection.class);
+		final OutputStream outputStreamMock = mock(OutputStream.class);
+
+		when(httpURLConnectionMock.getOutputStream()).thenReturn(outputStreamMock);
+		when(httpURLConnectionMock.getResponseCode()).thenReturn(HttpURLConnection.HTTP_UNAUTHORIZED);
 
 		// when
-		collectionRequest.run();
+		collectionRequest.postData(httpURLConnectionMock);
 
 		// then
-		verify(inputStreamMock).close();
-		verify(httpPostMock).releaseConnection();
+		verify(httpURLConnectionMock).setDoOutput(true);
+		verify(httpURLConnectionMock).setRequestMethod("POST");
+
+		verify(outputStreamMock).write("bla".getBytes("UTF-8"));
+		verify(outputStreamMock).close();
 	}
 
-	@Test
-	public void testRun_NOK_NoException() throws Exception {
+	@Test(expected = IOException.class)
+	public void testPostData_GetOSFailed() throws Exception {
 		// given
-		final CollectionRequest collectionRequest = new CollectionRequest(httpClientMock, httpPostMock);
-		final HttpResponse httpResponseMock = mock(HttpResponse.class);
-		when(httpClientMock.execute(httpPostMock)).thenReturn(httpResponseMock);
-		final StatusLine statusLineMock = mock(StatusLine.class);
-		when(httpResponseMock.getStatusLine()).thenReturn(statusLineMock);
-		when(statusLineMock.getStatusCode()).thenReturn(HttpStatus.SC_BAD_GATEWAY);
+		final CollectionRequest collectionRequest = new CollectionRequest("http://www.foo.bar", "bla");
+		final HttpURLConnection httpURLConnectionMock = mock(HttpURLConnection.class);
+
+		when(httpURLConnectionMock.getOutputStream()).thenThrow(new IOException());
 
 		// when
-		collectionRequest.run();
+		collectionRequest.postData(httpURLConnectionMock);
 
 		// then
-		verify(httpPostMock).releaseConnection();
-	}
-
-	@Test
-	public void testRun_IOException_Consumed() throws Exception {
-		// given
-		final CollectionRequest collectionRequest = new CollectionRequest(httpClientMock, httpPostMock);
-		when(httpClientMock.execute(httpPostMock)).thenThrow(new IOException());
-
-		// when
-		collectionRequest.run();
-
-		// then
-		verify(httpPostMock).releaseConnection();
+		verify(httpURLConnectionMock).setDoOutput(true);
+		verify(httpURLConnectionMock).setRequestMethod("POST");
 	}
 }

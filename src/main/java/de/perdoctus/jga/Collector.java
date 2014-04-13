@@ -23,11 +23,6 @@ import de.perdoctus.jga.annotation.AnalyticsParameter;
 import de.perdoctus.jga.annotation.Embedded;
 import de.perdoctus.jga.core.PayloadSerializer;
 import de.perdoctus.jga.payload.Payload;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,14 +36,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class Collector {
 
-	public static final int HTTP_MAX_TOTAL = 10;
-	public static final int HTTP_MAX_PER_ROUTE = 10;
 	public static final int MAX_THREADS = 10;
 	public static final int TERMINATION_TIMEOUT = 2000;
-	public static final String USER_AGENT = "Apache-HttpClient/4.3.3 (%s/%s; %s)";
 	private static final Logger LOG = LoggerFactory.getLogger(Collector.class);
 	private final PayloadSerializer payloadSerializer = new PayloadSerializer();
-	private final HttpClient httpClient;
 	private final ExecutorService executorService;
 	private final Configuration configuration;
 	private final SystemInfo systemInfo;
@@ -58,34 +49,15 @@ public class Collector {
 	}
 
 	public Collector(final Configuration configuration, final SystemInfo systemInfo) {
-		this(configuration, systemInfo, createDefaultHttpClient());
+		this(configuration, systemInfo, Executors.newFixedThreadPool(MAX_THREADS));
 	}
 
-	public Collector(final Configuration configuration, final SystemInfo systemInfo, final HttpClient httpClient) {
-		this(configuration, systemInfo, httpClient, Executors.newFixedThreadPool(MAX_THREADS));
-	}
-
-	public Collector(final Configuration configuration, final SystemInfo systemInfo, final HttpClient httpClient, final ExecutorService executorService) {
+	public Collector(final Configuration configuration, final SystemInfo systemInfo, final ExecutorService executorService) {
 		this.configuration = configuration;
 		this.systemInfo = systemInfo;
-		this.httpClient = httpClient;
 		this.executorService = executorService;
 
 		registerShutdownHook();
-	}
-
-	private static HttpClient createDefaultHttpClient() {
-		final String userAgentString = String.format(USER_AGENT, System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch"));
-
-		final PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager(1000, TimeUnit.MILLISECONDS);
-		poolingHttpClientConnectionManager.setMaxTotal(HTTP_MAX_TOTAL);
-		poolingHttpClientConnectionManager.setDefaultMaxPerRoute(HTTP_MAX_PER_ROUTE);
-
-		return HttpClientBuilder
-				.create()
-				.setUserAgent(userAgentString)
-				.setConnectionManager(poolingHttpClientConnectionManager)
-				.build();
 	}
 
 	private void registerShutdownHook() {
@@ -112,13 +84,12 @@ public class Collector {
 		final AnalyticsRequest analyticsRequest = new AnalyticsRequest(configuration.getTrackingId(), configuration.getProtocolVersion(), configuration.getClientId(), payload);
 		analyticsRequest.with(systemInfo);
 
-		final HttpPost postRequest = new HttpPost(configuration.getEndpointURL());
 		final String analyticsQueryString = payloadSerializer.serialize(analyticsRequest);
-		postRequest.setEntity(new StringEntity(analyticsQueryString, "UTF-8"));
 
-		LOG.debug(postRequest.toString() + " CONTENT " + analyticsQueryString);
+		LOG.debug(configuration.getEndpointURL() + ": " + analyticsQueryString);
 
-		final Thread collectionRequestThread = new Thread(new CollectionRequest(httpClient, postRequest));
+		final CollectionRequest collectionRequest = new CollectionRequest(configuration.getEndpointURL(), analyticsQueryString);
+		final Thread collectionRequestThread = new Thread(collectionRequest);
 
 		executorService.submit(collectionRequestThread);
 	}
