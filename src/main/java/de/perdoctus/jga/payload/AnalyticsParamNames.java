@@ -28,7 +28,11 @@ public final class AnalyticsParamNames {
 	public static final String KEY_HITTYPE = "t";
 	public static final String KEY_HITTYPE_NONINTERACTIVE = "ni";
 	public static final String KEY_ANONYMIZE_IP = "aip";
-	public static final String KEY_SESSION_CONTROL = "sc";
+
+	/* Session */
+	public static final String SESSION_CONTROL = "sc";
+	public static final String SESSION_IP_OVERRIDE = "uip";
+	public static final String SESSION_USER_AGENT_OVERRIDE = "ua";
 
 	/* Event Tracking */
 	public static final String KEY_EVENT_CATEGORY = "ec";
@@ -46,13 +50,20 @@ public final class AnalyticsParamNames {
 
 	/* E-Commerce (Transaction & Item) */
 	public static final String KEY_TRANSACTION_ID = "ti";
+	public static final String KEY_CURRENCY = "cu";
 
 	/* Transaction */
 	public static final String KEY_TRANSACTION_AFFILIATION = "ta";
 	public static final String KEY_TRANSACTION_REVENUE = "tr";
 	public static final String KEY_TRANSACTION_SHIPPING = "ts";
 	public static final String KEY_TRANSACTION_TAX = "tt";
-	public static final String KEY_CURRENCY = "cu";
+
+	/* Item */
+	public static final String ITEM_NAME = "in";
+	public static final String ITEM_PRICE = "ip";
+	public static final String ITEM_QUANTITY = "iq";
+	public static final String ITEM_CODE = "ic";
+	public static final String ITEM_CATEGORY = "iv";
 
 	/* App Info */
 	public static final String KEY_APPLICATION_NAME = "an";
@@ -68,16 +79,39 @@ public final class AnalyticsParamNames {
 	public static final String KEY_FLASH_VERSION = "fl";
 
 	/* Timing */
-	public static final String KEY_TIMING_USERTIMING_CATEGORY = "utc";
-	public static final String KEY_TIMING_USERTIMING_VARIABLE = "utv";
-	public static final String KEY_TIMING_USERTIMING_TIME = "utt";
-	public static final String KEY_TIMING_USERTIMING_LABEL = "utl";
-	public static final String KEY_TIMING_PAGE_LOAD_TIME = "plt";
-	public static final String KEY_TIMING_DNS_TIME = "dns";
-	public static final String KEY_TIMING_PAGE_DOWNLOAD_TIME = "pdt";
-	public static final String KEY_TIMING_REDIRECT_RESPONSE_TIME = "rrt";
-	public static final String KEY_TIMING_TCP_CONNECT_TIME = "tcp";
-	public static final String KEY_TIMING_SERVER_RESPONSE_TIME = "srt";
-	public static final String KEY_EXCEPTION_DESCRIPTION = "exd";
-	public static final String KEY_EXCEPTION_FATAL = "exf";
+	public static final String TIMING_USERTIMING_CATEGORY = "utc";
+	public static final String TIMING_USERTIMING_VARIABLE = "utv";
+	public static final String TIMING_USERTIMING_TIME = "utt";
+	public static final String TIMING_USERTIMING_LABEL = "utl";
+	public static final String TIMING_PAGE_LOAD_TIME = "plt";
+	public static final String TIMING_DNS_TIME = "dns";
+	public static final String TIMING_PAGE_DOWNLOAD_TIME = "pdt";
+	public static final String TIMING_REDIRECT_RESPONSE_TIME = "rrt";
+	public static final String TIMING_TCP_CONNECT_TIME = "tcp";
+	public static final String TIMING_SERVER_RESPONSE_TIME = "srt";
+
+	/* Exception */
+	public static final String EXCEPTION_DESCRIPTION = "exd";
+	public static final String EXCEPTION_FATAL = "exf";
+
+	/* Social */
+	public static final String SOCIAL_NETWORK = "sn";
+	public static final String SOCIAL_ACTION = "sa";
+	public static final String SOCIAL_TARGET = "st";
+
+	/* Experiment */
+	public static final String EXPERIMENT_ID = "xid";
+	public static final String EXPERIMENT_VARIANT = "xvar";
+
+	/* Traffic Source */
+	public static final String DOCUMENT_REFERRER = "dr";
+	public static final String CAMPAIGN_NAME = "cn";
+	public static final String CAMPAIGN_SOURCE = "cs";
+	public static final String CAMPAIGN_MEDIUM = "cm";
+	public static final String CAMPAIGN_KEYWORD = "ck";
+	public static final String CAMPAING_CONTENT = "cc";
+	public static final String CAMPAING_ID = "ci";
+	public static final String GOOGLE_ADWORDS_ID = "gclid";
+	public static final String GOOGLE_DISPLAY_ADS_ID = "dclid";
+
 }
