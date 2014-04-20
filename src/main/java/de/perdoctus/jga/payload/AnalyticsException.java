@@ -27,9 +27,9 @@ import de.perdoctus.jga.payload.types.BooleanValue;
  */
 public class AnalyticsException extends Payload<AnalyticsException> {
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_EXCEPTION_DESCRIPTION)
+	@AnalyticsParameter(AnalyticsParamNames.EXCEPTION_DESCRIPTION)
 	private String description;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_EXCEPTION_FATAL)
+	@AnalyticsParameter(AnalyticsParamNames.EXCEPTION_FATAL)
 	private BooleanValue fatal;
 
 	public AnalyticsException() {

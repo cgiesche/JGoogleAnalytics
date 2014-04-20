@@ -33,6 +33,9 @@ public @interface AnalyticsParameter {
 
 	String value();
 
+	/**
+	 * Forces parameter to be added to tracking request, even if it's value is null.
+	 */
 	boolean forceParam() default false;
 
 }

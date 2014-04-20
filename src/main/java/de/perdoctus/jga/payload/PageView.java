@@ -19,15 +19,20 @@
 
 package de.perdoctus.jga.payload;
 
+import de.perdoctus.jga.payload.segments.ContentInformation;
+
 /**
- * //TODO: ContentInformation recommended.
- *
  * @author Christoph Giesche
  */
 public class PageView extends Payload<PageView> {
 
 	public PageView() {
 		super(HitType.PAGEVIEW);
+	}
+
+	public PageView(final ContentInformation contentInformation) {
+		this();
+		with(contentInformation);
 	}
 
 }

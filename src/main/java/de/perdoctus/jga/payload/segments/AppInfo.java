@@ -32,8 +32,8 @@ public class AppInfo {
 	@AnalyticsParameter(AnalyticsParamNames.KEY_APPLICATION_VERSION)
 	private String applicationVersion;
 
-	public AppInfo applicationName(String superapp) {
-		applicationName = superapp;
+	public AppInfo applicationName(final String name) {
+		applicationName = name;
 		return this;
 	}
 

@@ -19,13 +19,18 @@
 
 package de.perdoctus.jga.payload;
 
+import de.perdoctus.jga.annotation.AnalyticsParameter;
+
 /**
  * @author Christoph Giesche
  */
 public class Social extends Payload<Social> {
 
+	@AnalyticsParameter(AnalyticsParamNames.SOCIAL_NETWORK)
 	private final String networkName;
+	@AnalyticsParameter(AnalyticsParamNames.SOCIAL_ACTION)
 	private final String action;
+	@AnalyticsParameter(AnalyticsParamNames.SOCIAL_TARGET)
 	private final String target;
 
 	public Social(final String networkName, final String action, final String target) {

@@ -20,6 +20,7 @@
 package de.perdoctus.jga.payload;
 
 import de.perdoctus.jga.payload.segments.AppInfo;
+import de.perdoctus.jga.payload.segments.ContentExperiment;
 import de.perdoctus.jga.payload.segments.ContentInformation;
 import org.junit.Test;
 
@@ -46,14 +47,29 @@ public class PayloadTest {
 		// given
 		final Payload payload = new Payload(Payload.HitType.ITEM) {
 		};
-		final ContentInformation givenCallbackInformation = new ContentInformation();
+		final ContentInformation contentInformation = new ContentInformation();
 
 		// when
-		final Payload resultingPayload = payload.with(givenCallbackInformation);
+		final Payload resultingPayload = payload.with(contentInformation);
 
 		// then
 		assertThat(resultingPayload).isSameAs(payload);
-		assertThat(payload.getContentInformation()).isSameAs(givenCallbackInformation);
+		assertThat(payload.getContentInformation()).isSameAs(contentInformation);
+	}
+
+	@Test
+	public void testContentExperiment() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		};
+		final ContentExperiment contentExperiment = new ContentExperiment();
+
+		// when
+		final Payload resultingPayload = payload.with(contentExperiment);
+
+		// then
+		assertThat(resultingPayload).isSameAs(payload);
+		assertThat(payload.getContentExperiment()).isSameAs(contentExperiment);
 	}
 
 	@Test

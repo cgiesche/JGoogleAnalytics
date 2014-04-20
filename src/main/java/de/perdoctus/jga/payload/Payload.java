@@ -22,6 +22,7 @@ package de.perdoctus.jga.payload;
 import de.perdoctus.jga.annotation.AnalyticsParameter;
 import de.perdoctus.jga.annotation.Embedded;
 import de.perdoctus.jga.payload.segments.AppInfo;
+import de.perdoctus.jga.payload.segments.ContentExperiment;
 import de.perdoctus.jga.payload.segments.ContentInformation;
 
 /**
@@ -38,14 +39,14 @@ public abstract class Payload<T extends Payload> {
 	private Integer nonInteractive;
 	@AnalyticsParameter(AnalyticsParamNames.KEY_ANONYMIZE_IP)
 	private Integer anonymizeIP;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_SESSION_CONTROL)
-	private String sessionControl;
 	@AnalyticsParameter(KEY_QUEUE_TIME)
 	private Integer queueTime;
 	@Embedded
 	private ContentInformation contentInformation;
 	@Embedded
 	private AppInfo appInfo;
+	@Embedded
+	private ContentExperiment contentExperiment;
 
 	protected Payload(final HitType hitType) {
 		this.hitType = hitType;
@@ -62,15 +63,6 @@ public abstract class Payload<T extends Payload> {
 	}
 
 	/**
-	 * <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#content">Content Information</a>
-	 */
-	@SuppressWarnings(UNCHECKED)
-	public T with(final ContentInformation contentInformation) {
-		this.contentInformation = contentInformation;
-		return (T) this;
-	}
-
-	/**
 	 * When present, the IP address of the sender will be anonymized.
 	 *
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#aip">Anonymize IP</a>
@@ -78,28 +70,6 @@ public abstract class Payload<T extends Payload> {
 	@SuppressWarnings("unchecked")
 	public T anonymizeIP() {
 		this.anonymizeIP = 1;
-		return (T) this;
-	}
-
-	/**
-	 * Used to control the session duration. Forces a new session to start with this hit.
-	 *
-	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#sc">Session Control</a>
-	 */
-	@SuppressWarnings(UNCHECKED)
-	public T sessionControlStart() {
-		this.sessionControl = "start";
-		return (T) this;
-	}
-
-	/**
-	 * Used to control the session duration. Forces the current session to end with this hit.
-	 *
-	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#sc">Session Control</a>
-	 */
-	@SuppressWarnings(UNCHECKED)
-	public T sessionControlEnd() {
-		this.sessionControl = "end";
 		return (T) this;
 	}
 
@@ -113,17 +83,34 @@ public abstract class Payload<T extends Payload> {
 		return (T) this;
 	}
 
+	@SuppressWarnings(UNCHECKED)
+	public T with(final ContentInformation contentInformation) {
+		this.contentInformation = contentInformation;
+		return (T) this;
+	}
+
+	@SuppressWarnings(UNCHECKED)
+	public Payload with(final AppInfo appInfo) {
+		this.appInfo = appInfo;
+		return (T) this;
+	}
+
+	@SuppressWarnings(UNCHECKED)
+	public Payload with(final ContentExperiment contentExperiment) {
+		this.contentExperiment = contentExperiment;
+		return (T) this;
+	}
+
 	public ContentInformation getContentInformation() {
 		return contentInformation;
 	}
 
-	public Payload with(final AppInfo appInfo) {
-		this.appInfo = appInfo;
-		return this;
-	}
-
 	public AppInfo getAppInfo() {
 		return appInfo;
+	}
+
+	public ContentExperiment getContentExperiment() {
+		return contentExperiment;
 	}
 
 	public HitType getHitType() {

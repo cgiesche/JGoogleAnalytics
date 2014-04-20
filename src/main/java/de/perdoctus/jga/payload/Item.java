@@ -27,15 +27,15 @@ import de.perdoctus.jga.payload.types.CurrencyValue;
  */
 public class Item extends ECommerce<Item> {
 
-	@AnalyticsParameter("in")
+	@AnalyticsParameter(AnalyticsParamNames.ITEM_NAME)
 	private final String itemName;
-	@AnalyticsParameter("ip")
+	@AnalyticsParameter(AnalyticsParamNames.ITEM_PRICE)
 	private CurrencyValue price;
-	@AnalyticsParameter("iq")
+	@AnalyticsParameter(AnalyticsParamNames.ITEM_QUANTITY)
 	private Integer quantity;
-	@AnalyticsParameter("ic")
+	@AnalyticsParameter(AnalyticsParamNames.ITEM_CODE)
 	private String code;
-	@AnalyticsParameter("iv")
+	@AnalyticsParameter(AnalyticsParamNames.ITEM_CATEGORY)
 	private String category;
 
 	public Item(final String transactionId, final String itemName) {

@@ -26,25 +26,25 @@ import de.perdoctus.jga.annotation.AnalyticsParameter;
  */
 public class Timing extends Payload<Timing> {
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_USERTIMING_CATEGORY)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_USERTIMING_CATEGORY)
 	private String userTimingCategory;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_USERTIMING_VARIABLE)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_USERTIMING_VARIABLE)
 	private String userTimingVariable;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_USERTIMING_TIME)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_USERTIMING_TIME)
 	private Integer userTimingTime;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_USERTIMING_LABEL)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_USERTIMING_LABEL)
 	private String userTimingLabel;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_PAGE_LOAD_TIME)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_PAGE_LOAD_TIME)
 	private Integer pageLoadTime;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_DNS_TIME)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_DNS_TIME)
 	private Integer dnsTime;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_PAGE_DOWNLOAD_TIME)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_PAGE_DOWNLOAD_TIME)
 	private Integer pageDownloadTime;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_REDIRECT_RESPONSE_TIME)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_REDIRECT_RESPONSE_TIME)
 	private Integer redirectResponseTime;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_TCP_CONNECT_TIME)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_TCP_CONNECT_TIME)
 	private Integer tcpConnectTime;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TIMING_SERVER_RESPONSE_TIME)
+	@AnalyticsParameter(AnalyticsParamNames.TIMING_SERVER_RESPONSE_TIME)
 	private Integer serverResponseTime;
 
 	public Timing() {
