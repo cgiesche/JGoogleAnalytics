@@ -22,7 +22,7 @@ package de.perdoctus.jga.payload;
 import de.perdoctus.jga.payload.types.BooleanValue;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static de.perdoctus.jga.assertj.EnrichedAssertions.assertThat;
 
 /**
  * @author Christoph Giesche
@@ -43,11 +43,33 @@ public class AnalyticsExceptionTest {
 	public void testConstructor_Exception() throws Exception {
 		// when
 		final AnalyticsException analyticsException = new AnalyticsException(new IllegalArgumentException("Foo"));
+		final String expectedDescription = "IllegalArgumentException";
 
 		// then
 		assertThat(analyticsException).isNotNull();
 		assertThat(analyticsException.getHitType()).isEqualTo(Payload.HitType.EXCEPTION);
-		assertThat(analyticsException.getDescription()).isEqualTo("IllegalArgumentException");
+		assertThat(analyticsException.getDescription()).isEqualTo(expectedDescription);
+
+		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_DESCRIPTION, expectedDescription);
+		assertThat(analyticsException).doesNotContain(AnalyticsParamNames.EXCEPTION_FATAL);
+
+	}
+
+	@Test
+	public void testConstructor_Error() throws Exception {
+		// when
+		final AnalyticsException analyticsException = new AnalyticsException(new OutOfMemoryError("Foo"));
+		final String expectedDescription = "OutOfMemoryError";
+
+		// then
+		assertThat(analyticsException).isNotNull();
+		assertThat(analyticsException.getHitType()).isEqualTo(Payload.HitType.EXCEPTION);
+		assertThat(analyticsException.getFatal()).isEqualTo(BooleanValue.TRUE);
+		assertThat(analyticsException.getDescription()).isEqualTo(expectedDescription);
+
+		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_DESCRIPTION, expectedDescription);
+		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_FATAL, BooleanValue.TRUE);
+
 	}
 
 	@Test
@@ -62,6 +84,9 @@ public class AnalyticsExceptionTest {
 		// then
 		assertThat(resultingAnalyticsException).isSameAs(analyticsException);
 		assertThat(analyticsException.getDescription()).isEqualTo(exceptionDescription);
+
+		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_DESCRIPTION, exceptionDescription);
+		assertThat(analyticsException).doesNotContain(AnalyticsParamNames.EXCEPTION_FATAL);
 	}
 
 	@Test
@@ -76,5 +101,8 @@ public class AnalyticsExceptionTest {
 		// then
 		assertThat(resultingAnalyticsException).isSameAs(analyticsException);
 		assertThat(analyticsException.getFatal()).isEqualTo(booleanValue);
+
+		assertThat(analyticsException).doesNotContain(AnalyticsParamNames.EXCEPTION_DESCRIPTION);
+		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_FATAL, BooleanValue.TRUE);
 	}
 }

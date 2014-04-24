@@ -36,9 +36,12 @@ public class AnalyticsException extends Payload<AnalyticsException> {
 		super(HitType.EXCEPTION);
 	}
 
-	public AnalyticsException(final Exception exception) {
+	public AnalyticsException(final Throwable throwable) {
 		this();
-		description(exception.getClass().getSimpleName());
+		description(throwable.getClass().getSimpleName());
+		if (throwable instanceof Error) {
+			fatal(BooleanValue.TRUE);
+		}
 	}
 
 	public AnalyticsException description(final String description) {

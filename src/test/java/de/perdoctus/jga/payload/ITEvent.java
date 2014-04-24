@@ -17,51 +17,39 @@
  * along with JGoogleAnalytics.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.perdoctus.jga;
+package de.perdoctus.jga.payload;
 
-import de.perdoctus.jga.payload.Event;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author Christoph Giesche
  */
-public class ITCollectorTest {
-
-	private static final String FIXED_CLIENT_ID = "385b25e8-b70a-41c3-9d21-c36cf027b812";
-	private static final String TRACKING_ID = "UA-28651183-6";
-
-	private final Configuration configuration = new Configuration(TRACKING_ID);
-
-	@Before
-	public void setUp() throws Exception {
-		configuration.setClientId(FIXED_CLIENT_ID);
-	}
+public class ITEvent extends CollectorTestBase {
 
 	@Test
 	public void testBasicEvent() throws Exception {
 		// given
-		final Collector collector = new Collector(configuration);
+		final Event event = new Event("ITCollectorTest", "testBasicEvent");
 
 		// when
-		collector.collect(new Event("ITCollectorTest", "testBasicEvent"));
+		collector.collect(event);
 	}
 
 	@Test
 	public void testEventWithLabel() throws Exception {
 		// given
-		final Collector collector = new Collector(configuration);
+		final Event event = new Event("ITCollectorTest", "testEventWithLabel").label("label");
 
 		// when
-		collector.collect(new Event("ITCollectorTest", "testEventWithLabel").label("label"));
+		collector.collect(event);
 	}
 
 	@Test
 	public void testEventWithLabelAndValue() throws Exception {
 		// given
-		final Collector collector = new Collector(configuration);
+		final Event event = new Event("ITCollectorTest", "testEventWithLabelAndValue").label("label").value(5);
 
 		// when
-		collector.collect(new Event("ITCollectorTest", "testEventWithLabelAndValue").label("label").value(5));
+		collector.collect(event);
 	}
 }
