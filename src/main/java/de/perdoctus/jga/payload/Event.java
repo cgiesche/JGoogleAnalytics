@@ -26,13 +26,13 @@ import de.perdoctus.jga.annotation.AnalyticsParameter;
  */
 public class Event extends Payload<Event> {
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_EVENT_CATEGORY)
+	@AnalyticsParameter(AnalyticsParamNames.EVENT_CATEGORY)
 	private final String category;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_EVENT_ACTION)
+	@AnalyticsParameter(AnalyticsParamNames.EVENT_ACTION)
 	private final String action;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_EVENT_LABEL)
+	@AnalyticsParameter(AnalyticsParamNames.EVENT_LABEL)
 	private String label;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_EVENT_VALUE)
+	@AnalyticsParameter(AnalyticsParamNames.EVENT_VALUE)
 	private Integer value;
 
 	/**

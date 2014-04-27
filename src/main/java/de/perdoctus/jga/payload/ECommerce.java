@@ -28,9 +28,9 @@ import java.util.Currency;
  */
 public abstract class ECommerce<T extends ECommerce> extends Payload<T> {
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TRANSACTION_ID)
+	@AnalyticsParameter(AnalyticsParamNames.TRANSACTION_ID)
 	private final String transactionId;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_CURRENCY)
+	@AnalyticsParameter(AnalyticsParamNames.CURRENCY)
 	private Currency currency;
 
 	protected ECommerce(final HitType hitType, final String transactionId) {

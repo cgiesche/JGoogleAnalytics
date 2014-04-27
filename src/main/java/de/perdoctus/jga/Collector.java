@@ -22,6 +22,7 @@ package de.perdoctus.jga;
 import de.perdoctus.jga.annotation.AnalyticsParameter;
 import de.perdoctus.jga.annotation.Embedded;
 import de.perdoctus.jga.core.PayloadSerializer;
+import de.perdoctus.jga.payload.AnalyticsParamNames;
 import de.perdoctus.jga.payload.Payload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,15 +97,11 @@ public class Collector {
 
 	private final class AnalyticsRequest {
 
-		public static final String KEY_TRACKING_ID = "tid";
-		public static final String KEY_PROTOCOL_VERSION = "v";
-		public static final String KEY_CLIENT_ID = "cid";
-
-		@AnalyticsParameter(KEY_TRACKING_ID)
+		@AnalyticsParameter(AnalyticsParamNames.TRACKING_ID)
 		private String trackingId;
-		@AnalyticsParameter(KEY_PROTOCOL_VERSION)
+		@AnalyticsParameter(AnalyticsParamNames.PROTOCOL_VERSION)
 		private String protocolVersion;
-		@AnalyticsParameter(KEY_CLIENT_ID)
+		@AnalyticsParameter(AnalyticsParamNames.CLIENT_ID)
 		private String clientId;
 
 		@Embedded
@@ -113,7 +110,7 @@ public class Collector {
 		@Embedded
 		private Payload payload;
 
-		public AnalyticsRequest(String trackingId, String protocolVersion, String clientId, Payload payload) {
+		public AnalyticsRequest(final String trackingId, final String protocolVersion, final String clientId, final Payload payload) {
 			this.trackingId = trackingId;
 			this.protocolVersion = protocolVersion;
 			this.clientId = clientId;

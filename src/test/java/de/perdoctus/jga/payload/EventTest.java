@@ -43,8 +43,8 @@ public class EventTest {
 		assertThat(event.getAction()).isEqualTo(ACTION);
 
 		assertThat(event).hasHitType(Payload.HitType.EVENT);
-		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_CATEGORY, CATEGORY);
-		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_ACTION, ACTION);
+		assertThat(event).contains(AnalyticsParamNames.EVENT_CATEGORY, CATEGORY);
+		assertThat(event).contains(AnalyticsParamNames.EVENT_ACTION, ACTION);
 	}
 
 	@Test
@@ -61,9 +61,9 @@ public class EventTest {
 		assertThat(resultingEvent.getLabel()).isEqualTo(labelText);
 
 		assertThat(event).hasHitType(Payload.HitType.EVENT);
-		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_CATEGORY, CATEGORY);
-		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_ACTION, ACTION);
-		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_LABEL, labelText);
+		assertThat(event).contains(AnalyticsParamNames.EVENT_CATEGORY, CATEGORY);
+		assertThat(event).contains(AnalyticsParamNames.EVENT_ACTION, ACTION);
+		assertThat(event).contains(AnalyticsParamNames.EVENT_LABEL, labelText);
 	}
 
 	@Test
@@ -80,8 +80,8 @@ public class EventTest {
 		assertThat(resultingEvent.getValue()).isEqualTo(value);
 
 		assertThat(event).hasHitType(Payload.HitType.EVENT);
-		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_CATEGORY, CATEGORY);
-		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_ACTION, ACTION);
-		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_VALUE, value);
+		assertThat(event).contains(AnalyticsParamNames.EVENT_CATEGORY, CATEGORY);
+		assertThat(event).contains(AnalyticsParamNames.EVENT_ACTION, ACTION);
+		assertThat(event).contains(AnalyticsParamNames.EVENT_VALUE, value);
 	}
 }

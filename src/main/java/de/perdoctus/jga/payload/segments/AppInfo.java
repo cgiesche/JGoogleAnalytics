@@ -27,9 +27,9 @@ import de.perdoctus.jga.payload.AnalyticsParamNames;
  */
 public class AppInfo {
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_APPLICATION_NAME)
+	@AnalyticsParameter(AnalyticsParamNames.APPLICATION_NAME)
 	private String applicationName;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_APPLICATION_VERSION)
+	@AnalyticsParameter(AnalyticsParamNames.APPLICATION_VERSION)
 	private String applicationVersion;
 
 	public AppInfo applicationName(final String name) {

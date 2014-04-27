@@ -31,19 +31,19 @@ import java.util.Locale;
  */
 public class SystemInfo {
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_SCREEN_RESOLUTION)
+	@AnalyticsParameter(AnalyticsParamNames.SCREEN_RESOLUTION)
 	private String screenResolution;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_VIEWPORT_SIZE)
+	@AnalyticsParameter(AnalyticsParamNames.VIEWPORT_SIZE)
 	private String viewportSize;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_ENCODING)
+	@AnalyticsParameter(AnalyticsParamNames.DOCUMENT_ENCODING)
 	private String documentEncoding;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_SCREEN_COLORS)
+	@AnalyticsParameter(AnalyticsParamNames.SCREEN_COLORS)
 	private String screenColors;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_USER_LANGUAGE)
+	@AnalyticsParameter(AnalyticsParamNames.USER_LANGUAGE)
 	private String userLanguage;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_JAVA_ENABLED)
+	@AnalyticsParameter(AnalyticsParamNames.JAVA_ENABLED)
 	private BooleanValue javaEnabled;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_FLASH_VERSION)
+	@AnalyticsParameter(AnalyticsParamNames.FLASH_VERSION)
 	private String flashVersion;
 
 	/**

@@ -33,11 +33,11 @@ public abstract class Payload<T extends Payload> {
 	public static final String UNCHECKED = "unchecked";
 	public static final String KEY_QUEUE_TIME = "qt";
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_HITTYPE)
+	@AnalyticsParameter(AnalyticsParamNames.HITTYPE)
 	private final HitType hitType;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_HITTYPE_NONINTERACTIVE)
+	@AnalyticsParameter(AnalyticsParamNames.HITTYPE_NONINTERACTIVE)
 	private Integer nonInteractive;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_ANONYMIZE_IP)
+	@AnalyticsParameter(AnalyticsParamNames.ANONYMIZE_IP)
 	private Integer anonymizeIP;
 	@AnalyticsParameter(KEY_QUEUE_TIME)
 	private Integer queueTime;

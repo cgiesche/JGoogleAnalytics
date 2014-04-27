@@ -24,10 +24,15 @@ package de.perdoctus.jga.payload;
  */
 public final class AnalyticsParamNames {
 
+	/* Core */
+	public static final String TRACKING_ID = "tid";
+	public static final String PROTOCOL_VERSION = "v";
+	public static final String CLIENT_ID = "cid";
+
 	/* General */
-	public static final String KEY_HITTYPE = "t";
-	public static final String KEY_HITTYPE_NONINTERACTIVE = "ni";
-	public static final String KEY_ANONYMIZE_IP = "aip";
+	public static final String HITTYPE = "t";
+	public static final String HITTYPE_NONINTERACTIVE = "ni";
+	public static final String ANONYMIZE_IP = "aip";
 
 	/* Session */
 	public static final String SESSION_CONTROL = "sc";
@@ -35,28 +40,28 @@ public final class AnalyticsParamNames {
 	public static final String SESSION_USER_AGENT_OVERRIDE = "ua";
 
 	/* Event Tracking */
-	public static final String KEY_EVENT_CATEGORY = "ec";
-	public static final String KEY_EVENT_ACTION = "ea";
-	public static final String KEY_EVENT_LABEL = "el";
-	public static final String KEY_EVENT_VALUE = "ev";
+	public static final String EVENT_CATEGORY = "ec";
+	public static final String EVENT_ACTION = "ea";
+	public static final String EVENT_LABEL = "el";
+	public static final String EVENT_VALUE = "ev";
 
 	/* Content Information */
-	public static final String KEY_DOCUMENT_LOCATION = "dl";
-	public static final String KEY_DOCUMENT_HOST_NAME = "dh";
-	public static final String KEY_DOCUMENT_PATH = "dp";
-	public static final String KEY_DOCUMENT_TITLE = "dt";
-	public static final String KEY_CONTENT_DESCRIPTION = "cd";
-	public static final String KEY_LINK_ID = "linkid";
+	public static final String DOCUMENT_LOCATION = "dl";
+	public static final String DOCUMENT_HOST_NAME = "dh";
+	public static final String DOCUMENT_PATH = "dp";
+	public static final String DOCUMENT_TITLE = "dt";
+	public static final String CONTENT_DESCRIPTION = "cd";
+	public static final String LINK_ID = "linkid";
 
 	/* E-Commerce (Transaction & Item) */
-	public static final String KEY_TRANSACTION_ID = "ti";
-	public static final String KEY_CURRENCY = "cu";
+	public static final String TRANSACTION_ID = "ti";
+	public static final String CURRENCY = "cu";
 
 	/* Transaction */
-	public static final String KEY_TRANSACTION_AFFILIATION = "ta";
-	public static final String KEY_TRANSACTION_REVENUE = "tr";
-	public static final String KEY_TRANSACTION_SHIPPING = "ts";
-	public static final String KEY_TRANSACTION_TAX = "tt";
+	public static final String TRANSACTION_AFFILIATION = "ta";
+	public static final String TRANSACTION_REVENUE = "tr";
+	public static final String TRANSACTION_SHIPPING = "ts";
+	public static final String TRANSACTION_TAX = "tt";
 
 	/* Item */
 	public static final String ITEM_NAME = "in";
@@ -66,17 +71,17 @@ public final class AnalyticsParamNames {
 	public static final String ITEM_CATEGORY = "iv";
 
 	/* App Info */
-	public static final String KEY_APPLICATION_NAME = "an";
-	public static final String KEY_APPLICATION_VERSION = "av";
+	public static final String APPLICATION_NAME = "an";
+	public static final String APPLICATION_VERSION = "av";
 
 	/* System Info */
-	public static final String KEY_SCREEN_RESOLUTION = "sr";
-	public static final String KEY_VIEWPORT_SIZE = "vp";
-	public static final String KEY_DOCUMENT_ENCODING = "de";
-	public static final String KEY_SCREEN_COLORS = "sd";
-	public static final String KEY_USER_LANGUAGE = "ul";
-	public static final String KEY_JAVA_ENABLED = "je";
-	public static final String KEY_FLASH_VERSION = "fl";
+	public static final String SCREEN_RESOLUTION = "sr";
+	public static final String VIEWPORT_SIZE = "vp";
+	public static final String DOCUMENT_ENCODING = "de";
+	public static final String SCREEN_COLORS = "sd";
+	public static final String USER_LANGUAGE = "ul";
+	public static final String JAVA_ENABLED = "je";
+	public static final String FLASH_VERSION = "fl";
 
 	/* Timing */
 	public static final String TIMING_USERTIMING_CATEGORY = "utc";

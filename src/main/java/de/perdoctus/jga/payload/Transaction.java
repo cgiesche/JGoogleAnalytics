@@ -27,13 +27,13 @@ import de.perdoctus.jga.payload.types.CurrencyValue;
  */
 public class Transaction extends ECommerce<Transaction> {
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TRANSACTION_AFFILIATION)
+	@AnalyticsParameter(AnalyticsParamNames.TRANSACTION_AFFILIATION)
 	private String affiliation;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TRANSACTION_REVENUE)
+	@AnalyticsParameter(AnalyticsParamNames.TRANSACTION_REVENUE)
 	private CurrencyValue revenue;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TRANSACTION_SHIPPING)
+	@AnalyticsParameter(AnalyticsParamNames.TRANSACTION_SHIPPING)
 	private CurrencyValue shipping;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_TRANSACTION_TAX)
+	@AnalyticsParameter(AnalyticsParamNames.TRANSACTION_TAX)
 	private CurrencyValue tax;
 
 	public Transaction(final String transactionId) {

@@ -55,7 +55,7 @@ public class PageViewTest {
 		assertThat(pageView.getContentInformation()).isSameAs(contentInformation);
 
 		assertThat(pageView).hasHitType(Payload.HitType.PAGEVIEW);
-		assertThat(pageView).contains(AnalyticsParamNames.KEY_DOCUMENT_LOCATION, documentLocation);
-		assertThat(pageView).contains(AnalyticsParamNames.KEY_DOCUMENT_TITLE, documentTitle);
+		assertThat(pageView).contains(AnalyticsParamNames.DOCUMENT_LOCATION, documentLocation);
+		assertThat(pageView).contains(AnalyticsParamNames.DOCUMENT_TITLE, documentTitle);
 	}
 }

@@ -44,7 +44,7 @@ public class ECommerceTest {
 		assertThat(eCommerce).isNotNull();
 		assertThat(eCommerce.getTransactionId()).isEqualTo(transactionId);
 
-		assertThat(eCommerce).contains(AnalyticsParamNames.KEY_TRANSACTION_ID, transactionId);
+		assertThat(eCommerce).contains(AnalyticsParamNames.TRANSACTION_ID, transactionId);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class ECommerceTest {
 		assertThat(resultingTransaction).isSameAs(eCommerce);
 		assertThat(eCommerce.getCurrency()).isEqualTo(currency);
 
-		assertThat(eCommerce).contains(AnalyticsParamNames.KEY_TRANSACTION_ID, transactionId);
-		assertThat(eCommerce).contains(AnalyticsParamNames.KEY_CURRENCY, currency.getCurrencyCode());
+		assertThat(eCommerce).contains(AnalyticsParamNames.TRANSACTION_ID, transactionId);
+		assertThat(eCommerce).contains(AnalyticsParamNames.CURRENCY, currency.getCurrencyCode());
 	}
 }

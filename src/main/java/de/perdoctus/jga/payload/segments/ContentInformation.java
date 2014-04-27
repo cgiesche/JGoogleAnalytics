@@ -28,17 +28,17 @@ import de.perdoctus.jga.payload.AnalyticsParamNames;
  */
 public class ContentInformation {
 
-	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_LOCATION)
+	@AnalyticsParameter(AnalyticsParamNames.DOCUMENT_LOCATION)
 	private String documentLocation;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_HOST_NAME)
+	@AnalyticsParameter(AnalyticsParamNames.DOCUMENT_HOST_NAME)
 	private String documentHostName;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_PATH)
+	@AnalyticsParameter(AnalyticsParamNames.DOCUMENT_PATH)
 	private String documentPath;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_DOCUMENT_TITLE)
+	@AnalyticsParameter(AnalyticsParamNames.DOCUMENT_TITLE)
 	private String documentTitle;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_CONTENT_DESCRIPTION)
+	@AnalyticsParameter(AnalyticsParamNames.CONTENT_DESCRIPTION)
 	private String contentDescription;
-	@AnalyticsParameter(AnalyticsParamNames.KEY_LINK_ID)
+	@AnalyticsParameter(AnalyticsParamNames.LINK_ID)
 	private String linkId;
 
 	public ContentInformation() {

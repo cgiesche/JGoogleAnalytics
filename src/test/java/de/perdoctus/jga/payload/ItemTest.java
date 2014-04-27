@@ -44,7 +44,7 @@ public class ItemTest {
 		assertThat(item.getItemName()).isEqualTo(itemName);
 
 		assertThat(item).hasHitType(Payload.HitType.ITEM);
-		assertThat(item).contains(AnalyticsParamNames.KEY_TRANSACTION_ID, transactionId);
+		assertThat(item).contains(AnalyticsParamNames.TRANSACTION_ID, transactionId);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_NAME, itemName);
 	}
 
@@ -64,7 +64,7 @@ public class ItemTest {
 		assertThat(item.getPrice()).isEqualTo(currencyValue);
 
 		assertThat(item).hasHitType(Payload.HitType.ITEM);
-		assertThat(item).contains(AnalyticsParamNames.KEY_TRANSACTION_ID, transactionId);
+		assertThat(item).contains(AnalyticsParamNames.TRANSACTION_ID, transactionId);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_NAME, itemName);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_PRICE, currencyValue);
 	}
@@ -85,7 +85,7 @@ public class ItemTest {
 		assertThat(item.getQuantity()).isEqualTo(quantity);
 
 		assertThat(item).hasHitType(Payload.HitType.ITEM);
-		assertThat(item).contains(AnalyticsParamNames.KEY_TRANSACTION_ID, transactionId);
+		assertThat(item).contains(AnalyticsParamNames.TRANSACTION_ID, transactionId);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_NAME, itemName);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_QUANTITY, quantity);
 	}
@@ -106,7 +106,7 @@ public class ItemTest {
 		assertThat(item.getCode()).isEqualTo(itemCode);
 
 		assertThat(item).hasHitType(Payload.HitType.ITEM);
-		assertThat(item).contains(AnalyticsParamNames.KEY_TRANSACTION_ID, transactionId);
+		assertThat(item).contains(AnalyticsParamNames.TRANSACTION_ID, transactionId);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_NAME, itemName);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_CODE, itemCode);
 	}
@@ -127,7 +127,7 @@ public class ItemTest {
 		assertThat(item.getCategory()).isEqualTo(category);
 
 		assertThat(item).hasHitType(Payload.HitType.ITEM);
-		assertThat(item).contains(AnalyticsParamNames.KEY_TRANSACTION_ID, transactionId);
+		assertThat(item).contains(AnalyticsParamNames.TRANSACTION_ID, transactionId);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_NAME, itemName);
 		assertThat(item).contains(AnalyticsParamNames.ITEM_CATEGORY, category);
 	}

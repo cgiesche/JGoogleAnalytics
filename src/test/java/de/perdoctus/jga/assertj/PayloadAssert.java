@@ -78,7 +78,7 @@ public class PayloadAssert extends AbstractAssert<PayloadAssert, Payload> {
 	public PayloadAssert hasHitType(final Payload.HitType hitType)
 			throws Exception {
 
-		contains(AnalyticsParamNames.KEY_HITTYPE, hitType);
+		contains(AnalyticsParamNames.HITTYPE, hitType);
 
 		return this;
 	}
