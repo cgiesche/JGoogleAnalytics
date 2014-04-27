@@ -41,11 +41,27 @@ public class PayloadSerializerTest {
 		};
 
 		// when
-		String result = payloadSerializer.serialize(stringValueContent);
+		final String result = payloadSerializer.serialize(stringValueContent);
 
 		// then
 		assertThat(result).isEqualTo("value=stringValue");
 	}
+
+	@Test
+	public void testSerialize_StringValueUrlEncoded() throws Exception {
+		// given
+		final Object stringValueContent = new Object() {
+			@AnalyticsParameter("value")
+			final String value = "!§$%&/()";
+		};
+
+		// when
+		final String result = payloadSerializer.serialize(stringValueContent);
+
+		// then
+		assertThat(result).isEqualTo("value=%21%C2%A7%24%25%26%2F%28%29");
+	}
+
 
 	@Test
 	public void testSerialize_IntegerValue() throws Exception {
@@ -56,7 +72,7 @@ public class PayloadSerializerTest {
 		};
 
 		// when
-		String result = payloadSerializer.serialize(stringValueContent);
+		final String result = payloadSerializer.serialize(stringValueContent);
 
 		// then
 		assertThat(result).isEqualTo("value=1");
@@ -74,7 +90,7 @@ public class PayloadSerializerTest {
 		};
 
 		// when
-		String result = payloadSerializer.serialize(stringValueContent);
+		final String result = payloadSerializer.serialize(stringValueContent);
 
 		// then
 		assertThat(result).isEqualTo("iKey=1&sKey=sValue");
@@ -84,19 +100,18 @@ public class PayloadSerializerTest {
 	public void testSerialize_EmbeddedObject() throws Exception {
 		// given
 		final Object stringValueContent = new Object() {
-			@AnalyticsParameter("parent")
-			private String value = "parent";
-
 			@Embedded
 			final Object embeddedObject = new Object() {
 				@AnalyticsParameter("embedded")
 				private String value = "value";
 			};
+			@AnalyticsParameter("parent")
+			private String value = "parent";
 
 		};
 
 		// when
-		String result = payloadSerializer.serialize(stringValueContent);
+		final String result = payloadSerializer.serialize(stringValueContent);
 
 		// then
 		assertThat(result).isEqualTo("parent=parent&embedded=value");
@@ -105,7 +120,7 @@ public class PayloadSerializerTest {
 	@Test
 	public void testSerialize_NullObject() throws Exception {
 		// when
-		String result = payloadSerializer.serialize(null);
+		final String result = payloadSerializer.serialize(null);
 
 		// then
 		assertThat(result).isNotNull().isEmpty();
@@ -115,19 +130,18 @@ public class PayloadSerializerTest {
 	public void testSerialize_EmbeddedNullObject() throws Exception {
 		// given
 		final Object stringValueContent = new Object() {
-			@AnalyticsParameter("parent")
-			private String value = "parent";
-
 			@Embedded
 			final Object embeddedObject = new Object() {
 				@AnalyticsParameter("embedded")
 				private String value = null;
 			};
+			@AnalyticsParameter("parent")
+			private String value = "parent";
 
 		};
 
 		// when
-		String result = payloadSerializer.serialize(stringValueContent);
+		final String result = payloadSerializer.serialize(stringValueContent);
 
 		// then
 		assertThat(result).isEqualTo("parent=parent");

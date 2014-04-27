@@ -23,7 +23,9 @@ import de.perdoctus.jga.annotation.AnalyticsParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -31,10 +33,10 @@ import java.util.List;
  */
 public class PayloadSerializer {
 
-	public static final char SEPARATOR_CHAR = '&';
-	public static final String EMPTY_STRING = "";
-	private final static Logger LOG = LoggerFactory.getLogger(PayloadSerializer.class);
-	private final AnalyticsParamResolver analyticsParamResolver = new AnalyticsParamResolver();
+	private static final char SEPARATOR_CHAR = '&';
+	private static final String EMPTY_STRING = "";
+	private static final Logger LOG = LoggerFactory.getLogger(PayloadSerializer.class);
+	private static final AnalyticsParamResolver analyticsParamResolver = new AnalyticsParamResolver();
 
 	public String serialize(final Object content) {
 		if (content == null) {
@@ -72,14 +74,17 @@ public class PayloadSerializer {
 	}
 
 	private String evaluateParam(final ParameterField parameterField, final Object content) {
-		String paramExpression = null;
+		final String paramExpression;
 		final Field annotatedField = parameterField.getField();
 		final AnalyticsParameter fieldAnnotation = parameterField.getParameterAnnotation();
 		final String parameterKey = fieldAnnotation.value();
 
 		final Object fieldValue = getFieldValue(annotatedField, content);
 		if (fieldValue != null || fieldAnnotation.forceParam()) {
-			paramExpression = parameterKey + '=' + String.valueOf(fieldValue);
+			final String fieldValueString = String.valueOf(fieldValue);
+			paramExpression = parameterKey + '=' + urlencode(fieldValueString);
+		} else {
+			paramExpression = null;
 		}
 
 		return paramExpression;
@@ -100,6 +105,17 @@ public class PayloadSerializer {
 		}
 
 		return fieldValue;
+	}
+
+	private String urlencode(final String fieldValueString) {
+		String result;
+		try {
+			result = URLEncoder.encode(fieldValueString, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LOG.warn("Failed to URL-encode String '" + fieldValueString + "'. Value will be empty.", e);
+			result = EMPTY_STRING;
+		}
+		return result;
 	}
 
 }
