@@ -19,18 +19,33 @@
 
 package de.perdoctus.jga.payload;
 
-import de.perdoctus.jga.Collector;
-import de.perdoctus.jga.Configuration;
+import org.junit.Test;
+
+import java.io.IOError;
+import java.io.IOException;
 
 /**
  * @author Christoph Giesche
  */
-public abstract class CollectorTestBase {
+public class AnalyticsExceptionIT extends CollectorIntegrationTestBase {
 
-	private static final String TRACKING_ID = "UA-28651183-6";
+	@Test
+	public void testException() throws Exception {
+		// given
+		final IOException ioException = new IOException("ohoh");
+		final AnalyticsException analyticsException = new AnalyticsException(ioException);
 
-	private final Configuration configuration = new Configuration(TRACKING_ID);
+		// when
+		collector.collect(analyticsException);
+	}
 
-	protected final Collector collector = new Collector(configuration);
+	@Test
+	public void testError() throws Exception {
+		// given
+		final IOError ioError = new IOError(new IOException("fubar"));
+		final AnalyticsException analyticsException = new AnalyticsException(ioError);
 
+		// when
+		collector.collect(analyticsException);
+	}
 }

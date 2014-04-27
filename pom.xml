@@ -78,7 +78,7 @@
                 <version>2.12.3</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/IT*.java</exclude>
+                        <exclude>**/*IT.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>

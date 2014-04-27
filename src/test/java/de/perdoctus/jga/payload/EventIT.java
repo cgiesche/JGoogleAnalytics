@@ -24,7 +24,7 @@ import org.junit.Test;
 /**
  * @author Christoph Giesche
  */
-public class ITEvent extends CollectorTestBase {
+public class EventIT extends CollectorIntegrationTestBase {
 
 	@Test
 	public void testBasicEvent() throws Exception {

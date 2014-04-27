@@ -100,13 +100,14 @@ public class PayloadSerializerTest {
 	public void testSerialize_EmbeddedObject() throws Exception {
 		// given
 		final Object stringValueContent = new Object() {
+			@AnalyticsParameter("parent")
+			private String value = "parent";
+
 			@Embedded
 			final Object embeddedObject = new Object() {
 				@AnalyticsParameter("embedded")
 				private String value = "value";
 			};
-			@AnalyticsParameter("parent")
-			private String value = "parent";
 
 		};
 

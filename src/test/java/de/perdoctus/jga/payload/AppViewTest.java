@@ -21,7 +21,7 @@ package de.perdoctus.jga.payload;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static de.perdoctus.jga.assertj.EnrichedAssertions.assertThat;
 
 /**
  * @author Christoph Giesche
@@ -35,6 +35,8 @@ public class AppViewTest {
 
 		// then
 		assertThat(appView.getHitType()).isEqualTo(Payload.HitType.APPVIEW);
+
+		assertThat(appView).hasHitType(Payload.HitType.APPVIEW);
 
 	}
 }

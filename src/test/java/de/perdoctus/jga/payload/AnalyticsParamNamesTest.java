@@ -34,6 +34,7 @@ public class AnalyticsParamNamesTest {
 
 	/*
 	 * Prevent us from accidential duplicate key definition.
+	 * (Yeah, I know about enums, but I did this because of reasons ;)
 	 */
 	@Test
 	public void testKeysAreUniqe() throws Exception {

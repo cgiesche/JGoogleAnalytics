@@ -21,7 +21,7 @@ package de.perdoctus.jga.payload;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static de.perdoctus.jga.assertj.EnrichedAssertions.assertThat;
 
 /**
  * @author Christoph Giesche
@@ -42,6 +42,11 @@ public class SocialTest {
 		assertThat(social.getNetworkName()).isEqualTo(socialNetworkName);
 		assertThat(social.getAction()).isEqualTo(socialNetworkAction);
 		assertThat(social.getTarget()).isEqualTo(socialNetworkTarget);
+
+		assertThat(social).hasHitType(Payload.HitType.SOCIAL);
+		assertThat(social).contains(AnalyticsParamNames.SOCIAL_NETWORK, socialNetworkName);
+		assertThat(social).contains(AnalyticsParamNames.SOCIAL_ACTION, socialNetworkAction);
+		assertThat(social).contains(AnalyticsParamNames.SOCIAL_TARGET, socialNetworkTarget);
 
 	}
 

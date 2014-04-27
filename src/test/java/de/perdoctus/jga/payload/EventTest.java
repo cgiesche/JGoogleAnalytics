@@ -21,7 +21,7 @@ package de.perdoctus.jga.payload;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static de.perdoctus.jga.assertj.EnrichedAssertions.assertThat;
 
 /**
  * @author Christoph Giesche
@@ -41,31 +41,47 @@ public class EventTest {
 		assertThat(event.getHitType()).isEqualTo(Payload.HitType.EVENT);
 		assertThat(event.getCategory()).isEqualTo(CATEGORY);
 		assertThat(event.getAction()).isEqualTo(ACTION);
+
+		assertThat(event).hasHitType(Payload.HitType.EVENT);
+		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_CATEGORY, CATEGORY);
+		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_ACTION, ACTION);
 	}
 
 	@Test
 	public void testLabel() throws Exception {
 		// given
 		final Event event = new Event(CATEGORY, ACTION);
+		final String labelText = "labelText";
 
 		// when
-		final Event resultingEvent = event.label("labelText");
+		final Event resultingEvent = event.label(labelText);
 
 		// then
 		assertThat(resultingEvent).isEqualTo(event);
-		assertThat(resultingEvent.getLabel()).isEqualTo("labelText");
+		assertThat(resultingEvent.getLabel()).isEqualTo(labelText);
+
+		assertThat(event).hasHitType(Payload.HitType.EVENT);
+		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_CATEGORY, CATEGORY);
+		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_ACTION, ACTION);
+		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_LABEL, labelText);
 	}
 
 	@Test
 	public void testValue() throws Exception {
 		// given
 		final Event event = new Event(CATEGORY, ACTION);
+		final int value = 22;
 
 		// when
-		final Event resultingEvent = event.value(22);
+		final Event resultingEvent = event.value(value);
 
 		// then
 		assertThat(resultingEvent).isEqualTo(event);
-		assertThat(resultingEvent.getValue()).isEqualTo(22);
+		assertThat(resultingEvent.getValue()).isEqualTo(value);
+
+		assertThat(event).hasHitType(Payload.HitType.EVENT);
+		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_CATEGORY, CATEGORY);
+		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_ACTION, ACTION);
+		assertThat(event).contains(AnalyticsParamNames.KEY_EVENT_VALUE, value);
 	}
 }

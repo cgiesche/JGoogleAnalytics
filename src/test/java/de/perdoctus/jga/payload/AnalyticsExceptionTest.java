@@ -37,6 +37,8 @@ public class AnalyticsExceptionTest {
 		// then
 		assertThat(analyticsException).isNotNull();
 		assertThat(analyticsException.getHitType()).isEqualTo(Payload.HitType.EXCEPTION);
+
+		assertThat(analyticsException).hasHitType(Payload.HitType.EXCEPTION);
 	}
 
 	@Test
@@ -50,9 +52,9 @@ public class AnalyticsExceptionTest {
 		assertThat(analyticsException.getHitType()).isEqualTo(Payload.HitType.EXCEPTION);
 		assertThat(analyticsException.getDescription()).isEqualTo(expectedDescription);
 
+		assertThat(analyticsException).hasHitType(Payload.HitType.EXCEPTION);
 		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_DESCRIPTION, expectedDescription);
 		assertThat(analyticsException).doesNotContain(AnalyticsParamNames.EXCEPTION_FATAL);
-
 	}
 
 	@Test
@@ -67,9 +69,9 @@ public class AnalyticsExceptionTest {
 		assertThat(analyticsException.getFatal()).isEqualTo(BooleanValue.TRUE);
 		assertThat(analyticsException.getDescription()).isEqualTo(expectedDescription);
 
+		assertThat(analyticsException).hasHitType(Payload.HitType.EXCEPTION);
 		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_DESCRIPTION, expectedDescription);
 		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_FATAL, BooleanValue.TRUE);
-
 	}
 
 	@Test
@@ -85,6 +87,7 @@ public class AnalyticsExceptionTest {
 		assertThat(resultingAnalyticsException).isSameAs(analyticsException);
 		assertThat(analyticsException.getDescription()).isEqualTo(exceptionDescription);
 
+		assertThat(analyticsException).hasHitType(Payload.HitType.EXCEPTION);
 		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_DESCRIPTION, exceptionDescription);
 		assertThat(analyticsException).doesNotContain(AnalyticsParamNames.EXCEPTION_FATAL);
 	}
@@ -102,6 +105,7 @@ public class AnalyticsExceptionTest {
 		assertThat(resultingAnalyticsException).isSameAs(analyticsException);
 		assertThat(analyticsException.getFatal()).isEqualTo(booleanValue);
 
+		assertThat(analyticsException).hasHitType(Payload.HitType.EXCEPTION);
 		assertThat(analyticsException).doesNotContain(AnalyticsParamNames.EXCEPTION_DESCRIPTION);
 		assertThat(analyticsException).contains(AnalyticsParamNames.EXCEPTION_FATAL, BooleanValue.TRUE);
 	}

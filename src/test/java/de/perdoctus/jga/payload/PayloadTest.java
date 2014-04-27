@@ -24,7 +24,7 @@ import de.perdoctus.jga.payload.segments.ContentExperiment;
 import de.perdoctus.jga.payload.segments.ContentInformation;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static de.perdoctus.jga.assertj.EnrichedAssertions.assertThat;
 
 /**
  * @author Christoph Giesche
@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PayloadTest {
 
 	@Test
-	public void testConstroctor() throws Exception {
+	public void testConstructor() throws Exception {
 		// when
 		final Payload payload = new Payload(Payload.HitType.ITEM) {
 		};
@@ -40,12 +40,14 @@ public class PayloadTest {
 		// then
 		assertThat(payload).isNotNull();
 		assertThat(payload.getHitType()).isEqualTo(Payload.HitType.ITEM);
+
+		assertThat(payload).hasHitType(Payload.HitType.ITEM);
 	}
 
 	@Test
 	public void testContentInformation() throws Exception {
 		// given
-		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		final Payload payload = new Payload(Payload.HitType.TIMING) {
 		};
 		final ContentInformation contentInformation = new ContentInformation();
 
@@ -55,6 +57,8 @@ public class PayloadTest {
 		// then
 		assertThat(resultingPayload).isSameAs(payload);
 		assertThat(payload.getContentInformation()).isSameAs(contentInformation);
+
+		assertThat(payload).hasHitType(Payload.HitType.TIMING);
 	}
 
 	@Test

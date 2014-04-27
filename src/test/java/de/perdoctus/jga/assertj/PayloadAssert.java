@@ -20,6 +20,7 @@
 package de.perdoctus.jga.assertj;
 
 import de.perdoctus.jga.core.PayloadSerializer;
+import de.perdoctus.jga.payload.AnalyticsParamNames;
 import de.perdoctus.jga.payload.Payload;
 import org.assertj.core.api.AbstractAssert;
 
@@ -52,7 +53,7 @@ public class PayloadAssert extends AbstractAssert<PayloadAssert, Payload> {
 		final String serializedPayload = PAYLOAD_SERIALIZER.serialize(actual);
 
 		if (!serializedPayload.matches(pattern)) {
-			failWithMessage("Serialized payload <%s> does not contain param <%s> with value <%s>.", serializedPayload, paramKey, encodedValue);
+			failWithMessage("Serialized payload <%s> does not contain parameter <%s> with value <%s>.", serializedPayload, paramKey, encodedValue);
 		}
 
 		return this;
@@ -62,14 +63,22 @@ public class PayloadAssert extends AbstractAssert<PayloadAssert, Payload> {
 			throws Exception {
 
 		isNotNull();
-		;
+
 		final String pattern = "(^|.+&)" + paramKey + "=.*($|&.+)";
 
 		final String serializedPayload = PAYLOAD_SERIALIZER.serialize(actual);
 
 		if (serializedPayload.matches(pattern)) {
-			failWithMessage("Serialized payload <%s> contains param <%s> but should not.", serializedPayload, paramKey);
+			failWithMessage("Serialized payload <%s> contains parameter <%s> but should not.", serializedPayload, paramKey);
 		}
+
+		return this;
+	}
+
+	public PayloadAssert hasHitType(final Payload.HitType hitType)
+			throws Exception {
+
+		contains(AnalyticsParamNames.KEY_HITTYPE, hitType);
 
 		return this;
 	}

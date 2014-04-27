@@ -22,7 +22,7 @@ package de.perdoctus.jga.payload;
 import de.perdoctus.jga.payload.segments.ContentInformation;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static de.perdoctus.jga.assertj.EnrichedAssertions.assertThat;
 
 /**
  * @author Christoph Giesche
@@ -36,12 +36,16 @@ public class PageViewTest {
 
 		// then
 		assertThat(pageView.getHitType()).isEqualTo(Payload.HitType.PAGEVIEW);
+
+		assertThat(pageView).hasHitType(Payload.HitType.PAGEVIEW);
 	}
 
 	@Test
 	public void testConstructorWithContentInfo() throws Exception {
 		// given
-		final ContentInformation contentInformation = new ContentInformation("http://foo.com/home?a=b", "Settings");
+		final String documentLocation = "http://foo.com/home?a=b";
+		final String documentTitle = "Settings";
+		final ContentInformation contentInformation = new ContentInformation(documentLocation, documentTitle);
 
 		// when
 		final PageView pageView = new PageView(contentInformation);
@@ -49,5 +53,9 @@ public class PageViewTest {
 		// then
 		assertThat(pageView.getHitType()).isEqualTo(Payload.HitType.PAGEVIEW);
 		assertThat(pageView.getContentInformation()).isSameAs(contentInformation);
+
+		assertThat(pageView).hasHitType(Payload.HitType.PAGEVIEW);
+		assertThat(pageView).contains(AnalyticsParamNames.KEY_DOCUMENT_LOCATION, documentLocation);
+		assertThat(pageView).contains(AnalyticsParamNames.KEY_DOCUMENT_TITLE, documentTitle);
 	}
 }
