@@ -19,7 +19,6 @@
 
 package de.perdoctus.jga.payload;
 
-import com.sun.istack.internal.Nullable;
 import de.perdoctus.jga.annotation.AnalyticsParameter;
 import de.perdoctus.jga.annotation.Embedded;
 import de.perdoctus.jga.payload.segments.AppInfo;
