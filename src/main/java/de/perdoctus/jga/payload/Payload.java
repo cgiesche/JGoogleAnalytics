@@ -19,11 +19,14 @@
 
 package de.perdoctus.jga.payload;
 
+import com.sun.istack.internal.Nullable;
 import de.perdoctus.jga.annotation.AnalyticsParameter;
 import de.perdoctus.jga.annotation.Embedded;
 import de.perdoctus.jga.payload.segments.AppInfo;
 import de.perdoctus.jga.payload.segments.ContentExperiment;
 import de.perdoctus.jga.payload.segments.ContentInformation;
+import de.perdoctus.jga.payload.segments.Session;
+import de.perdoctus.jga.payload.types.BooleanValue;
 
 /**
  * @author Christoph Giesche
@@ -31,15 +34,14 @@ import de.perdoctus.jga.payload.segments.ContentInformation;
 public abstract class Payload<T extends Payload> {
 
 	public static final String UNCHECKED = "unchecked";
-	public static final String KEY_QUEUE_TIME = "qt";
 
 	@AnalyticsParameter(AnalyticsParamNames.HITTYPE)
 	private final HitType hitType;
 	@AnalyticsParameter(AnalyticsParamNames.HITTYPE_NONINTERACTIVE)
-	private Integer nonInteractive;
+	private BooleanValue nonInteractive;
 	@AnalyticsParameter(AnalyticsParamNames.ANONYMIZE_IP)
-	private Integer anonymizeIP;
-	@AnalyticsParameter(KEY_QUEUE_TIME)
+	private BooleanValue anonymizeIP;
+	@AnalyticsParameter(AnalyticsParamNames.QUEUE_TIME)
 	private Integer queueTime;
 	@Embedded
 	private ContentInformation contentInformation;
@@ -47,6 +49,8 @@ public abstract class Payload<T extends Payload> {
 	private AppInfo appInfo;
 	@Embedded
 	private ContentExperiment contentExperiment;
+	@Embedded
+	private Session session;
 
 	protected Payload(final HitType hitType) {
 		this.hitType = hitType;
@@ -57,8 +61,8 @@ public abstract class Payload<T extends Payload> {
 	 * <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni">Non-Interaction Hit</a>
 	 */
 	@SuppressWarnings(UNCHECKED)
-	public T nonInteractive() {
-		this.nonInteractive = 1;
+	public T nonInteractive(final boolean nonInteractive) {
+		this.nonInteractive = BooleanValue.valueOf(nonInteractive);
 		return (T) this;
 	}
 
@@ -68,8 +72,8 @@ public abstract class Payload<T extends Payload> {
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#aip">Anonymize IP</a>
 	 */
 	@SuppressWarnings("unchecked")
-	public T anonymizeIP() {
-		this.anonymizeIP = 1;
+	public T anonymizeIP(final boolean anonymizeIp) {
+		this.anonymizeIP = BooleanValue.valueOf(anonymizeIp);
 		return (T) this;
 	}
 
@@ -78,7 +82,7 @@ public abstract class Payload<T extends Payload> {
 	 * @see <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#qt">Queue Time</a>
 	 */
 	@SuppressWarnings(UNCHECKED)
-	public Payload queueTime(int milliseconds) {
+	public T queueTime(final int milliseconds) {
 		this.queueTime = milliseconds;
 		return (T) this;
 	}
@@ -90,14 +94,20 @@ public abstract class Payload<T extends Payload> {
 	}
 
 	@SuppressWarnings(UNCHECKED)
-	public Payload with(final AppInfo appInfo) {
+	public T with(final AppInfo appInfo) {
 		this.appInfo = appInfo;
 		return (T) this;
 	}
 
 	@SuppressWarnings(UNCHECKED)
-	public Payload with(final ContentExperiment contentExperiment) {
+	public T with(final ContentExperiment contentExperiment) {
 		this.contentExperiment = contentExperiment;
+		return (T) this;
+	}
+
+	@SuppressWarnings(UNCHECKED)
+	public T with(final Session session) {
+		this.session = session;
 		return (T) this;
 	}
 
@@ -115,6 +125,22 @@ public abstract class Payload<T extends Payload> {
 
 	public HitType getHitType() {
 		return hitType;
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public boolean getNonInteractive() {
+		return nonInteractive.toBoolean();
+	}
+
+	public boolean isAnonymizeIP() {
+		return anonymizeIP.toBoolean();
+	}
+
+	public Integer getQueueTime() {
+		return queueTime;
 	}
 
 	/**

@@ -22,23 +22,27 @@ package de.perdoctus.jga.payload.types;
 /**
  * @author Christoph Giesche
  */
-public class BooleanValue {
+public enum BooleanValue {
 
-	public static final BooleanValue TRUE = new BooleanValue(true);
-	public static final BooleanValue FALSE = new BooleanValue(false);
+	TRUE(true),
+	FALSE(false);
 
-	private final String booleanValue;
+	private final boolean booleanValue;
 
-	private BooleanValue(boolean booleanValue) {
-		this.booleanValue = booleanValue ? "1" : "0";
+	private BooleanValue(final boolean booleanValue) {
+		this.booleanValue = booleanValue;
 	}
 
-	public static BooleanValue valueOf(boolean booleanValue) {
+	public static BooleanValue valueOf(final boolean booleanValue) {
 		return booleanValue ? TRUE : FALSE;
 	}
 
 	@Override
 	public String toString() {
+		return  booleanValue ? "1" : "0";
+	}
+
+	public boolean toBoolean() {
 		return booleanValue;
 	}
 }

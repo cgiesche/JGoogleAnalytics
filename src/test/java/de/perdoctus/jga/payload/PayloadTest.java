@@ -22,6 +22,8 @@ package de.perdoctus.jga.payload;
 import de.perdoctus.jga.payload.segments.AppInfo;
 import de.perdoctus.jga.payload.segments.ContentExperiment;
 import de.perdoctus.jga.payload.segments.ContentInformation;
+import de.perdoctus.jga.payload.segments.Session;
+import de.perdoctus.jga.payload.types.BooleanValue;
 import org.junit.Test;
 
 import static de.perdoctus.jga.assertj.EnrichedAssertions.assertThat;
@@ -89,5 +91,63 @@ public class PayloadTest {
 		// then
 		assertThat(resultingPayload).isSameAs(payload);
 		assertThat(payload.getAppInfo()).isSameAs(givenAppInfo);
+	}
+
+	@Test
+	public void testSession() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		};
+		final Session session = new Session();
+
+		// when
+		final Payload resultingPayload = payload.with(session);
+
+		// then
+		assertThat(resultingPayload).isSameAs(payload);
+		assertThat(payload.getSession()).isSameAs(session);
+	}
+
+
+	@Test
+	public void testNonInteractive() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		};
+
+		// when
+		final Payload resultingPayload = payload.nonInteractive(true);
+
+		// then
+		assertThat(resultingPayload).isSameAs(payload);
+		assertThat(payload.getNonInteractive()).isTrue();
+	}
+
+	@Test
+	public void testAnonymizeIp() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		};
+
+		// when
+		final Payload resultingPayload = payload.anonymizeIP(true);
+
+		// then
+		assertThat(resultingPayload).isSameAs(payload);
+		assertThat(payload.isAnonymizeIP()).isTrue();
+	}
+
+	@Test
+	public void testQueueTime() throws Exception {
+		// given
+		final Payload payload = new Payload(Payload.HitType.ITEM) {
+		};
+
+		// when
+		final Payload resultingPayload = payload.queueTime(232);
+
+		// then
+		assertThat(resultingPayload).isSameAs(payload);
+		assertThat(payload.getQueueTime()).isEqualTo(232);
 	}
 }

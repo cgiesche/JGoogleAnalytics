@@ -22,7 +22,7 @@ package de.perdoctus.jga.payload;
 /**
  * @author Christoph Giesche
  */
-public final class AnalyticsParamNames {
+public class AnalyticsParamNames {
 
 	/* Core */
 	public static final String TRACKING_ID = "tid";
@@ -33,6 +33,7 @@ public final class AnalyticsParamNames {
 	public static final String HITTYPE = "t";
 	public static final String HITTYPE_NONINTERACTIVE = "ni";
 	public static final String ANONYMIZE_IP = "aip";
+	public static final String QUEUE_TIME = "qt";
 
 	/* Session */
 	public static final String SESSION_CONTROL = "sc";
